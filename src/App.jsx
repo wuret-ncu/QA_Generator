@@ -18,7 +18,7 @@ function App() {
     <Navbar />
       <BrowserRouter>
         <Routes>
-            <Route path="/" element={<Login />} />
+            <Route path="/" element={<Index />} />
             <Route path='/read' element={<Read />}></Route>
             <Route path='/write' element={<Write />}></Route>
             <Route path='/analysis' element={<Analytic />}></Route>
