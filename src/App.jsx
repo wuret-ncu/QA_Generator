@@ -16,8 +16,8 @@ import { ContextProvider } from './Contexts/Context';
 function App() {
   return (
   <div>
-    <Navbar />
     <ContextProvider>
+    <Navbar />
       <BrowserRouter>
         <Routes>
             <Route path="/" element={<Index />} />
