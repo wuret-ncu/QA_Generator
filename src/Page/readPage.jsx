@@ -1,33 +1,75 @@
 import React, { useState, useEffect } from "react";
-import { Container, Row, Col, Form, Button } from "react-bootstrap";
+// import { Container, Row, Col, Form, Button } from "react-bootstrap";
 
 const options = ["自訂","Topic 1", "Topic 2", "Topic 3"]; // 下拉式選單的選項
-const allTitle = ["請輸入自訂標題","Topic 1's Article Title.","Topic 2's Article Title.","Topic 3's Article Title."]
-const allArticle = ["請輸入自訂文章","In 2009, the Taiwu Elementary School Folk Singers were invited to perform in Belgium, France, Germany, and Luxemburg. In 2011, they were voted as one of the world’s top five performance groups by audiences of Japan Broadcasting Corporation’s Amazing Voice program. Recalling the group’s first tour in Europe, Camake Valaule, a physical education teacher and the founder of the Taiwu Elementary School Folk Singers, admitted that he felt very nervous. He was worried that the audience would fall asleep since most of the 75-minute performance was a cappella, that is, singing without instrumental sound. Surprisingly, the audience listened with full focus and high spirits. Camake said, “They told me afterward that through our performance, they had a vision of our country, our village, without having to visit it. This experience greatly boosted our confidence.” According to Camake Valaule, singing traditional ballads has helped students and their parents to re-understand their culture. “It used to be that the only ones who could sing these songs were tribal elders aged between 50 and 60. Now with the children performing the pieces, parents are beginning to ask, ‘Why do we not know how to sing these ballads?’ Many times nowadays, it is the children who teach the songs to their parents, putting back the pieces of a blurred memory.” Winning international fame, however, was neither the original intention nor the main reason why Camake founded the group in 2006. The most important thing was to make children understand why they sing these songs and to preserve and pass on their culture. Referring to the relocation of Taiwu Elementary School and Taiwu Village following Typhoon Morakot in August 2009, Camake said, “We could not take the forest or our houses in the mountains with us; but we were able to bring our culture along. As long as the children are willing to sing, I will always be there for them, singing with them and leading them to experience the meaning of the ballads.”","Topic 2's Article Content.","Topic 3's Article Content."]
+const allTitle = ["","Topic 1's Article Title.","Topic 2's Article Title.","Topic 3's Article Title."]
+const allArticle = ["","In 2009, the Taiwu Elementary School Folk Singers were invited to perform in Belgium, France, Germany, and Luxemburg. In 2011, they were voted as one of the world’s top five performance groups by audiences of Japan Broadcasting Corporation’s Amazing Voice program. Recalling the group’s first tour in Europe, Camake Valaule, a physical education teacher and the founder of the Taiwu Elementary School Folk Singers, admitted that he felt very nervous. He was worried that the audience would fall asleep since most of the 75-minute performance was a cappella, that is, singing without instrumental sound. Surprisingly, the audience listened with full focus and high spirits. Camake said, “They told me afterward that through our performance, they had a vision of our country, our village, without having to visit it. This experience greatly boosted our confidence.” According to Camake Valaule, singing traditional ballads has helped students and their parents to re-understand their culture. “It used to be that the only ones who could sing these songs were tribal elders aged between 50 and 60. Now with the children performing the pieces, parents are beginning to ask, ‘Why do we not know how to sing these ballads?’ Many times nowadays, it is the children who teach the songs to their parents, putting back the pieces of a blurred memory.” Winning international fame, however, was neither the original intention nor the main reason why Camake founded the group in 2006. The most important thing was to make children understand why they sing these songs and to preserve and pass on their culture. Referring to the relocation of Taiwu Elementary School and Taiwu Village following Typhoon Morakot in August 2009, Camake said, “We could not take the forest or our houses in the mountains with us; but we were able to bring our culture along. As long as the children are willing to sing, I will always be there for them, singing with them and leading them to experience the meaning of the ballads.”","Topic 2's Article Content.","Topic 3's Article Content."]
 
 function ReadPage() {
   const [selectedOption, setSelectedOption] = useState(options[0]); // 當前選擇的Topic
-  const [title, setTitle] = useState(""); // 文章標題
-  const [article, setArticle] = useState(""); // 文章內容
+  // const [defaultTitle, setdefaultTitle] = useState("請輸入自訂標題"); // 文章標題
+  // const [defaultArticle, setdefaultArticle] = useState("請輸入自訂文章"); // 文章內容
+  const [title, setTitle] = useState("請輸入自訂標題"); // 文章標題
+  const [article, setArticle] = useState("請輸入自訂文章"); // 文章內容
   const [wordCount, setWordCount] = useState(0); // 文章總字數
+  const [titleReadOnly, setTitleReadOnly] = useState(false);// 標題唯讀判斷
+  const [articleReadOnly, setＡrticleReadOnly] = useState(false);// 標題唯讀判斷
+  
+  const [showQuestions, setShowQuestions] = useState(false);
 
   // 模擬文章生成，每次選擇改變時重新生成文章
   function ReadingGenerator(){
     const a = options.indexOf(selectedOption)
-    console.log(a)
-    const newTitle = allTitle[a];
-    const newArticle = allArticle[a];
-    setTitle(newTitle);
-    setArticle(newArticle);
-    setWordCount(newArticle.split(" ").length);
+    if(a===0){
+      // console.log({title},{article});
+      const newTitle = title;
+      const newArticle = article;
+      setTitle(newTitle);
+      setArticle(newArticle);
+      setWordCount(newArticle.split(" ").length);
+    }
+    else{
+      const newTitle = allTitle[a];
+      const newArticle = allArticle[a];
+      setTitle(newTitle);
+      setArticle(newArticle);
+      setWordCount(newArticle.split(" ").length);
+    }
+    setShowQuestions(true);
   }
 
-  // 模擬文章生成，每次選擇改變時重新生成文章
-  useEffect(() => {
-    setTitle("");
-    setArticle("");
-    setWordCount(0);
+  // onChange事件，更新狀態值Title value
+  function handleTitleChange(event) {
+    if(!titleReadOnly){
+      setTitle(event.target.value);
+    }
+  }
 
+  // onChange事件，更新狀態值Article value
+  function handleArticleChange(event) {
+    if(!articleReadOnly){
+      setArticle(event.target.value);
+    }
+  }
+
+  
+  useEffect(() => {
+    // setTitle("");
+    // setArticle("");
+    setWordCount(0);
+    setShowQuestions(false);
+    if (selectedOption === "自訂") {
+      setTitleReadOnly(false);
+      setＡrticleReadOnly(false);
+      setTitle("請輸入自訂標題");
+      setArticle("請輸入自訂文章");
+    } else {
+      setTitleReadOnly(true);
+      setＡrticleReadOnly(true);
+      setTitle("請點擊Generator以生成標題");
+      setArticle("請點擊Generator以生成文章");
+    }
+    
   }, [selectedOption]);
 
 
@@ -108,13 +150,18 @@ function ReadPage() {
           className="block w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 mt-4 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
           type="text"
           value={title}
-          readOnly
+          rereadOnly={titleReadOnly}
+          onChange={handleTitleChange}
+          // defaultValue={defaultTitle}
         />
         <textarea
           className="block w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 mt-4 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
-          rows="10"
+          style={{resize: "none"}}
+          rows="30"
           value={article}
-          readOnly
+          rereadOnly={articleReadOnly}
+          onChange={handleArticleChange}
+          // defaultValue={defaultArticle}
         ></textarea>
         <p className="text-gray-500 mt-4 text-sm">Word Count: {wordCount}</p>
         <button
@@ -125,8 +172,8 @@ function ReadPage() {
         </button>
 
       </div>
-      <div className="w-1/2 p-2">
-        <h2 className="text-2xl font-bold mb-4">Questions</h2>
+      <div className={`md:w-1/3 p-4 ${showQuestions ? "" : "hidden"}`}>
+        <h2 className="text-2xl font-bold mb-4 ">Questions</h2>
         {generateQuestions()}
         <button
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
