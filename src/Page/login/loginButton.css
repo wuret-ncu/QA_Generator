@@ -1,0 +1,59 @@
+.google-login-button {
+    background-image: url("../../picture/google_icon.svg");
+    background-size: contain;
+    /* background-repeat: no-repeat;
+    width: 24px;
+    height: 24px; */
+    /* background-color: hsl(var(--b3)); */
+    /* color: #fff; */
+    cursor: pointer;
+    width: 48px;
+    height: 48px;
+    border-radius: 24px;
+    /* Use half of the width/height to create a circular shape */
+    outline: 10px;
+}
+
+.google-login-button:hover {
+    border: 2px solid hsl(var(--p));
+}
+
+.google-login-button:disabled {
+    background-color: #9aa9af;
+    cursor: not-allowed;
+}
+
+.google-login-button>span {
+    margin-left: 4px;
+}
+.github-login-button {
+    background-image: url("../../picture/github_icon.svg");
+    background-size: contain;
+    /* background-repeat: no-repeat;
+    width: 24px;
+    height: 24px; */
+    /* background-color: hsl(var(--b3)); */
+    /* color: #fff; */
+    cursor: pointer;
+    width: 48px;
+    height: 48px;
+    border-radius: 24px;
+    /* Use half of the width/height to create a circular shape */
+    /* display: flex;
+    align-items: center;
+    justify-content: center; */
+    outline: 10px;
+}
+
+.github-login-button:hover {
+    border: 2px solid hsl(var(--p));
+}
+
+.github-login-button:disabled {
+    background-color: #9aa9af;
+    cursor: not-allowed;
+}
+
+.github-login-button>span {
+    margin-left: 4px;
+}
