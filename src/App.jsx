@@ -4,7 +4,7 @@ import Index from './Page/index';
 import Read from './Page/readPage';
 import Write from './Page/writePage';
 import Analytic from './Page/analysis';
-import Login from './Page/loginPage';
+import Login from './Page/login';
 import Register from './Page/register';
 import Navbar from './Component/Navbar';
 import './input.css'
