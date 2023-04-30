@@ -1,9 +1,16 @@
 import React from 'react'
+import Write from '../Component/Analysis/Wirte'
+import Read from '../Component/Analysis/Read'
+import SelectBar from '../Component/Analysis/SelectBar'
 
-function analysis() {
+function Analysis() {
   return (
-    <div>analysis</div>
+    <div className='container'>
+     <SelectBar />
+     <Read />
+     <Write />
+    </div>
   )
 }
 
-export default analysis
+export default Analysis
