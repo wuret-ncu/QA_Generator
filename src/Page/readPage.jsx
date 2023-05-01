@@ -21,7 +21,6 @@ function ReadPage() {
   function ReadingGenerator(){
     const a = options.indexOf(selectedOption)
     if(a===0){
-      // console.log({title},{article});
       const newTitle = title;
       const newArticle = article;
       setTitle(newTitle);
@@ -133,7 +132,7 @@ function ReadPage() {
   }
 
   return (
-    <div className="flex flex-row mx-auto">
+    <div className="container flex flex-row mx-auto">
       <div className="w-1/2 p-8">
         <select
           className="block w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
@@ -164,23 +163,25 @@ function ReadPage() {
           // defaultValue={defaultArticle}
         ></textarea>
         <p className="text-gray-500 mt-4 text-sm">Word Count: {wordCount}</p>
+
+        <div className="col-span-12">
         <button
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
+          className="btn text-white btn-primary mt-4"
           onClick={ReadingGenerator}
         >
           Generate
         </button>
+        </div>
 
       </div>
       <div className={`md:w-1/3 p-4 ${showQuestions ? "" : "hidden"}`}>
         <h2 className="text-2xl font-bold mb-4 ">Questions</h2>
         {generateQuestions()}
-        <button
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
-          onClick={ReadingGenerator}
-        >
-          Submit
-        </button>
+        
+        <div className="col-span-12">
+          <button className="btn text-white btn-primary mt-4">Submit</button>
+        </div>
+
       </div>
     </div>
   );

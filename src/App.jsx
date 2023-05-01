@@ -4,9 +4,10 @@ import Index from './Page/index';
 import Read from './Page/readPage';
 import Write from './Page/writePage';
 import Analytic from './Page/analysis';
-import Login from './Page/loginPage';
+import Login from './Page/login';
 import Register from './Page/register';
 import Navbar from './Component/Navbar';
+import WritingScore from './Page/writingScore';
 import './input.css'
 import { ContextProvider } from './Contexts/Context';
 
@@ -26,6 +27,7 @@ function App() {
             <Route path='/analysis' element={<Analytic />}></Route>
             <Route path='/logout' element={<Login />}></Route>
             <Route path='/register' element={<Register />}></Route>
+            <Route path='/writingScore' element={<WritingScore />}></Route>
         </Routes>
       </BrowserRouter>
       </ContextProvider>

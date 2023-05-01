@@ -11,9 +11,13 @@ module.exports = {
         'card-pink':'#FAEBF0',
         'card-blue':'#DAFDFF',
         'card-gray':'#EEEEEE',
+        focus: '#C9B1E1',
         white: colors.white,
       },
     },
+  },
+  daisyui: {
+    themes: ["cupcake"],
   },
   plugins: [require("daisyui")],
 }

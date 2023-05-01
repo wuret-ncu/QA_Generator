@@ -1941,3 +1941,9 @@ html {
     opacity: 1;
   }
 }
+
+.focus\:border-blue-500:focus {
+  border-color: #0077E6; 
+  outline: none;
+  box-shadow: none;
+}
