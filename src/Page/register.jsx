@@ -1,22 +1,25 @@
 import LoginButton from "./login/loginPage"
 import { useNavigate } from "react-router-dom"
 
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { Context } from "../Contexts/Context";
+
 
 function Register() {
   const navigation = useNavigate()
   const [showPassword, setShowPassword] = useState(false);
+
+  const {test, setTest} = useContext(Context)
 
   const handleTogglePassword = () => {
     setShowPassword(!showPassword);
   };
 
   function handleLogin() {
-    
+    setTest(true)
     navigation('/login')
-    localStorage.setItem('isLoggedIn', 'true');
   }
 
   return (

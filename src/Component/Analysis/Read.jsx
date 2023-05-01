@@ -32,7 +32,7 @@ function Read() {
         ],
       };
 
-      const labels = ['January', 'February', 'March']
+      const labels = ['January', 'February', 'March','January', 'February', 'March','January', 'February', 'March']
 
      const dataLine = {
       labels,
@@ -79,7 +79,7 @@ function Read() {
 };
     
   return (
-<div className="flex h-screen mt-5">
+<div className="flex h-screen mt-2">
 
     {/* 第一區塊 */}
   <div className="basis-2/5 flex-col">
@@ -96,25 +96,25 @@ function Read() {
                 </div>
             </div>
 
-            <div className='h-2/3 overflow-y-auto'>
-                <div className="card lg:card-side bg-base-100 shadow m-3 max-h-div">
-                <div className="card-body p-2">
-                <Line className="p-4" options={options} data={dataLine} />
-                </div>
+            <div className='h-2/3 overflow-y-auto p-3'>
+                <div className="card lg:card-side bg-base-100 shadow max-h-div">
+                  <div className="card-body p-3">
+                    <Line options={options} data={dataLine} />
+                  </div>
                 </div>
             </div>
         </div>
-        <div className='basis-1/2'>
-                <div className="card lg:card-side bg-base-100 shadow mr-3 max-h-div">
+        {/* <div className='basis-1/2 pr-3'>
+                <div className="card lg:card-side bg-base-100 shadow max-h-div">
                     <div className="card-body p-2">
                         <Pie data={data} />
                     </div>
                 </div>
 
-        </div>
+        </div> */}
     </div>
-    <div className="h-1/2">
-            <div className="card lg:card-side bg-base-100 shadow m-3">
+    <div className="h-1/2 p-3">
+            <div className="card lg:card-side bg-base-100 shadow">
                 <div className="card-body p-2">
                     <h2 className="card-title">Writing Skill</h2>
                     <p>Click the button to listen on Spotiwhy app.</p>
@@ -132,15 +132,15 @@ function Read() {
 
   {/* 第二區塊 */}
   <div className="basis-2/5">
-    <div className="h-1/2">
-        <div className="card lg:card-side bg-base-100 shadow mr-3 max-h-div">
-            <div className="card-body">
+    <div className="h-1/2 pr-3">
+        <div className="card lg:card-side bg-base-100 shadow max-h-div">
+            <div className="card-body p-3">
                 <Bar options={options} data={dataLine} />
             </div>
         </div>
     </div>
-    <div className="h-1/2">
-            <div className="card lg:card-side bg-base-100 shadow mt-3 mr-3">
+    <div className="h-1/2 pt-3 pr-3">
+            <div className="card lg:card-side bg-base-100 shadow">
                 <div className="card-body">
                     <h2 className="card-title">Writing Skill</h2>
                     <p>Click the button to listen on Spotiwhy app.</p>
@@ -158,11 +158,11 @@ function Read() {
   </div>
 
   {/* 第三區塊 */}
-  <div className="basis-1/5">
+  <div className="basis-1/5 pr-3">
 
-  <div className="card lg:card-side bg-base-100 shadow">
+  <div className="card lg:card-side bg-base-100 shadow ">
 
-  <div className="card-body">
+  <div className="card-body p-5">
     <div className='flex'>
         <p>Histiry</p>
         <input

@@ -8,9 +8,9 @@ function SelectBar() {
     const [startDate, setStartDate] = useState(new Date());
   
   return (
-    <div className='container flex flex-row py-5'>
-        <div className='basis-1/6'>
-            <p className="text-2xl">Analysis</p>
+    <div className='container flex flex-row py-5 items-center'>
+        <div className='basis-1/6 '>
+            <p className="text-2xl ps-5">Analysis</p>
         </div>
         <div className='basis-1/6'>
             <select className="select select-bordered w-full max-w-xs">
@@ -19,7 +19,7 @@ function SelectBar() {
                 <option>Write</option>
             </select>
         </div>
-        <div className='basis-1/2 flex justify-end content-center'>
+        <div className='basis-1/2 flex justify-center ps-5'>
             <p>Date</p>
             <DatePicker  selected={startDate} onChange={(date) => setStartDate(date)} />
             <p className='px-5'>~</p>
