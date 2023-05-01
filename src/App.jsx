@@ -25,7 +25,7 @@ function App() {
             <Route path='/read' element={<Read />}></Route>
             <Route path='/write' element={<Write />}></Route>
             <Route path='/analysis' element={<Analytic />}></Route>
-            <Route path='/logout' element={<Login />}></Route>
+            <Route path='/login' element={<Login />}></Route>
             <Route path='/register' element={<Register />}></Route>
             <Route path='/writingScore' element={<WritingScore />}></Route>
         </Routes>

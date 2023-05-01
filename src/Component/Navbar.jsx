@@ -37,8 +37,8 @@ function Navbar() {
               <li><a href="/logout" onClick={e => handelLogout()}>Logout</a></li>
             </>)
             :(<>
-              <li><a href="/login" onClick={e => handleLogin()}>Login</a></li>
-              <li><a href="/resiger">Resiger</a></li>
+              <li><a href="/login" /*onClick={e => handleLogin()}*/>Login</a></li>
+              <li><a href="/register">Register</a></li>
             </>)
             }
 
