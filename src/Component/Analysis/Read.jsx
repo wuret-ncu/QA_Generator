@@ -56,6 +56,28 @@ function Read() {
           },
         },
       };
+
+    const optionBar = {
+      
+  maintainAspectRatio: false,
+  legend: { display: false },
+  scales: {
+    xAxes: [
+      {
+        barPercentage: 0.5,
+        categoryPercentage: 0.5,
+        gridLines: { display: false },
+      },
+    ],
+    yAxes: [
+      {
+        ticks: { display: false },
+        gridLines: { display: false },
+      },
+    ],
+  },
+};
+    
   return (
 <div className="flex h-screen mt-5">
 
@@ -65,8 +87,8 @@ function Read() {
     <div className="h-1/2 flex">
         <div className='basis-1/2'>
 
-            <div className='h-1/3'>
-                <div className="card lg:card-side bg-base-100 shadow mx-3 max-h-div">
+            <div className='h-1/3 p-3'>
+                <div className="card lg:card-side bg-base-100 shadow max-h-div">
                     <div className="card-body p-5">
                         <div className="text-base">Total Page Views</div>
                         <div className="text-2xl">89%</div>
@@ -77,7 +99,7 @@ function Read() {
             <div className='h-2/3 overflow-y-auto'>
                 <div className="card lg:card-side bg-base-100 shadow m-3 max-h-div">
                 <div className="card-body p-2">
-                <Line className="m-4" options={options} data={dataLine} />
+                <Line className="p-4" options={options} data={dataLine} />
                 </div>
                 </div>
             </div>
