@@ -88,7 +88,7 @@ function Read() {
     };
 
   return (
-<div className="flex h-screen my-5" style={{ height: '80vh' }}>
+<div className="flex h-screen my-5 mx-5" style={{ height: '80vh' }}>
 
     {/* 第一區塊 */}
   <div className="basis-2/5 flex-col">
