@@ -19,12 +19,11 @@ function SelectBar() {
                 <option>Write</option>
             </select>
         </div>
-        <div className='basis-1/2 flex justify-center ps-5'>
-            <p>Date</p>
+        <div className='basis-1/2 flex justify-items-center ps-5'>
+            <p className='pr-4'>Date</p>
             <DatePicker  selected={startDate} onChange={(date) => setStartDate(date)} />
             <p className='px-5'>~</p>
             <DatePicker  selected={startDate} onChange={(date) => setStartDate(date)} />
-            
         </div>
   </div>
   )
