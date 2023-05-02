@@ -4,7 +4,7 @@ export const Context = createContext();
 
 export const ContextProvider = (props) =>{
 
-        const [ test, setTest ] = useState('123')
+        const [ test, setTest ] = useState(false)
     
         return (
             <Context.Provider value={{  test, setTest }}>

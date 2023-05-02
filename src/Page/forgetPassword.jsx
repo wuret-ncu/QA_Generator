@@ -1,5 +1,5 @@
 import LoginButton from "./login/loginPage"
-import { useEffect, useContext,useState } from 'react';
+import { useEffect, useContext, useState } from 'react';
 import { gapi } from 'gapi-script';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
@@ -7,19 +7,19 @@ import { useNavigate } from "react-router-dom"
 import { Context } from "../Contexts/Context";
 
 
-function Login() {
+function ForgetPassword() {
     const navigation = useNavigate()
     const [showPassword, setShowPassword] = useState(false);
-    const {test, setTest} = useContext(Context)
+    const { test, setTest } = useContext(Context)
 
     const handleTogglePassword = () => {
         setShowPassword(!showPassword);
     };
 
-    const handleLogin = () =>{
+    const handleLogin = () => {
         setTest(true)
         navigation('/')
-    } 
+    }
     // useEffect(() => {
     //     function start() {
     //         gapi.client.init({
@@ -41,33 +41,9 @@ function Login() {
                                 </label>
                                 <input type="text" placeholder="email" className="input input-bordered" />
                             </div>
-                            <div className="form-control">
-                                <label className="label">
-                                    <span className="label-text">Password</span>
-                                </label>
-                                <div style={{ position: "relative" }} className="flex items-center">
-                                    <input
-                                        type={showPassword ? "text" : "password"}
-                                        placeholder="password"
-                                        className="input input-bordered pr-12"
-                                        style={{ width: "100%" }}
-                                    />
-                                    <button
-                                        style={{ position: "absolute", right: "8px" }}
-                                        className="btn btn-sm btn-circle btn-ghost"
-                                        onClick={handleTogglePassword}
-                                    >
-                                        <FontAwesomeIcon
-                                            icon={showPassword ? faEyeSlash : faEye}
-                                        />
-                                    </button>
-                                </div>
-                                <label className="label">
-                                    <a href="/forgetPassword" className="label-text-alt link link-hover">Forget password?</a>
-                                </label>
-                            </div>
+
                             <div className="form-control mt-6">
-                                <button className="btn btn-primary" onClick={()=> handleLogin()}>Login</button>
+                                <button className="btn btn-primary" onClick={() => handleLogin()}>Find Password</button>
                             </div>
                             <div className="divider">OR</div>
                             <LoginButton />
@@ -84,4 +60,4 @@ function Login() {
     )
 }
 
-export default Login;
+export default ForgetPassword;

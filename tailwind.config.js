@@ -5,6 +5,9 @@ module.exports = {
     "./src/**/*.{js,jsx,ts,tsx}",
   ],
   theme: {
+    container: {
+      center: true,
+    },
     extend: {
       colors: {
         'theme-green': '#8CB9B9',
@@ -18,6 +21,8 @@ module.exports = {
   daisyui: {
     themes: ["cupcake"],
   },
-  plugins: [require("daisyui")],
+  plugins: [
+    require('daisyui'),
+  ],
 }
 

@@ -6,6 +6,7 @@ import Write from './Page/writePage';
 import Analytic from './Page/analysis';
 import Login from './Page/login';
 import Register from './Page/register';
+import ForgetPassword from './Page/forgetPassword';
 import Navbar from './Component/Navbar';
 import './input.css'
 import { ContextProvider } from './Contexts/Context';
@@ -15,21 +16,22 @@ import { ContextProvider } from './Contexts/Context';
 
 function App() {
   return (
-  <div>
-    <ContextProvider>
-    <Navbar />
-      <BrowserRouter>
-        <Routes>
+    <div>
+      <ContextProvider>
+        <Navbar />
+        <BrowserRouter>
+          <Routes>
             <Route path="/" element={<Index />} />
             <Route path='/read' element={<Read />}></Route>
             <Route path='/write' element={<Write />}></Route>
             <Route path='/analysis' element={<Analytic />}></Route>
             <Route path='/login' element={<Login />}></Route>
             <Route path='/register' element={<Register />}></Route>
-        </Routes>
-      </BrowserRouter>
+            <Route path='/forgetPassword' element={<ForgetPassword />}></Route>
+          </Routes>
+        </BrowserRouter>
       </ContextProvider>
-      </div>
+    </div>
   );
 }
 
