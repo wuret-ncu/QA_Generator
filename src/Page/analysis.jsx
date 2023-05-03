@@ -8,7 +8,7 @@ function Analysis() {
     <div>
      <SelectBar />
      <Read />
-     <Write />
+     {/* <Write /> */}
     </div>
   )
 }
