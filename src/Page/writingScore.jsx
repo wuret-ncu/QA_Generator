@@ -68,55 +68,54 @@ const WritingScore = (props) => {
     <div className="h-screen">
       <div className="mx-auto max-w-3xl p-6">
         <div className="bg-white shadow-lg rounded-md p-6">
-          <div className="flex items-center justify-between">
-            <h2 className="text-lg font-medium text-gray-900">
+          <div className="flex items-center justify-center">   
+            <h2 className="text-2xl font-bold text-gray-900 my-4">
               Writing Result
             </h2>
-            {/* <Link to="/" className="text-gray-500 hover:text-gray-700">
-              <GrEdit className="inline-block mr-1 -mt-1" /> Edit Writing
-            </Link> */}
           </div>
           <div className="my-6">
-            <div className="flex items-center mb-4">
+            <div className="flex items-center mb-4 my-4">
               <BsFileText className="inline-block mr-3 text-gray-400" />
-              <h3 className="text-xl font-medium text-gray-900">Topic:Cooking</h3>
+              <h3 className="text-xl font-medium text-gray-900">Topic:<span className="text-gray-600"> Cooking </span></h3>
             </div>
-            <div className="flex items-center mb-4">
+            <div className="flex items-center mb-4 my-4">
               <BsFileText className="inline-block mr-3 text-gray-400" />
-              <h3 className="text-xl font-medium text-gray-900">Title:How to Make a Cup of Coffee</h3>
+              <h3 className="text-xl font-medium text-gray-900">Title:<span className="text-gray-600"> How to Make a Cup of Coffee </span></h3>
             </div>
-            <div className="flex items-center mb-4">
+            <div className="flex items-center mb-4 my-4">
               <BsFileText className="inline-block mr-3 text-gray-400" />
               <h3 className="text-xl font-medium text-gray-900">
-                Score Criteria:TOEIC
+                Score Criteria:<span className="text-gray-600"> TOEIC </span>
               </h3>
             </div>
-            <div className="flex items-center mb-4">
+            <div className="flex items-center mb-4 my-4">
               <BsFileText className="inline-block mr-3 text-gray-400" />
               <h3 className="text-xl font-medium text-gray-900">Comment:</h3>
             </div>
-            <p className="border border-gray-300 rounded-md p-2">Your article was clear and well-organized, with good grammar and accuracy. However, it lacked originality and didn't offer any new insights. Overall, a solid effort.</p>
+            <p className="text-xl border border-gray-300 text-gray-600 rounded-md p-4 my-4">Your article was clear and well-organized, with good grammar and accuracy. However, it lacked originality and didn't offer any new insights. Overall, a solid effort. Your article was clear and well-organized, with good grammar and accuracy. However, it lacked originality and didn't offer any new insights. Overall, a solid effort.</p>
             <div className="flex items-center my-4">
               <BsFileText className="inline-block mr-3 text-gray-400" />
               <h3 className="text-xl font-medium text-gray-900">
-                Word Count: 750
+                Word Count:<span className="text-gray-600"> 750 </span>
               </h3>
             </div>
-            <div className="flex items-center my-4">
-              <BsFileText className="inline-block mr-3 text-gray-400" />
-              <h3 className="text-xl font-medium text-gray-900">
-                Score: 85 / 100
-              </h3>
-            </div>
-            </div>
-            <div className="flex justify-end">
+            <div className="flex items-center my-4 justify-between">
+              <div className="flex items-center my-4">
+                <BsFileText className="inline-block mr-3 text-gray-400" />
+                <h3 className="text-xl font-medium text-center">
+                  Score: <span className="text-2xl text-red-500">85</span> <span className="text-gray-600"> / 100</span>
+                </h3>
+              </div>
+              <div className="items-end">
                 <Link
-                    to="/"
-                    className="btn text-white btn-primary"
-                    >
-                    End Test
+                  to="/"
+                  className="btn text-white btn-primary"
+                  >
+                  End Test
                 </Link>
+              </div>
             </div>
+          </div>
         </div>
       </div> 
     </div>);

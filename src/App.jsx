@@ -8,6 +8,8 @@ import Login from './Page/login';
 import Register from './Page/register';
 import Navbar from './Component/Navbar';
 import WritingScore from './Page/writingScore';
+import ReadingScore from './Page/readingScore';
+
 import './input.css'
 import { ContextProvider } from './Contexts/Context';
 
@@ -28,6 +30,7 @@ function App() {
             <Route path='/login' element={<Login />}></Route>
             <Route path='/register' element={<Register />}></Route>
             <Route path='/writingScore' element={<WritingScore />}></Route>
+            <Route path='/readingScore' element={<ReadingScore />}></Route>
         </Routes>
       </BrowserRouter>
       </ContextProvider>

@@ -6,9 +6,13 @@ function Navbar() {
   const [isLogin , setIsLogin] = useState(false);
 
   useEffect(()=>{
+    if(test){
+      localStorage.setItem('isLoggedIn', 'true');
+    }
     setIsLogin(localStorage.getItem('isLoggedIn'))
-    console.log(localStorage.getItem('isLoggedIn'))
-  },[])
+  },[test])
+
+  
 
   function handleLogin() {
     localStorage.setItem('isLoggedIn', 'true');
@@ -34,10 +38,10 @@ function Navbar() {
               <li><a href="/read">Read</a></li>
               <li><a href="/write">Write</a></li>
               <li><a href="/analysis">Analysis</a></li>
-              <li><a href="/logout" onClick={e => handelLogout()}>Logout</a></li>
+              <li><a href="/login" onClick={e => handelLogout()}>Logout</a></li>
             </>)
             :(<>
-              <li><a href="/login" /*onClick={e => handleLogin()}*/>Login</a></li>
+              <li><a href="/login">Login</a></li>
               <li><a href="/register">Register</a></li>
             </>)
             }

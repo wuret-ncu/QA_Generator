@@ -1,20 +1,25 @@
 import LoginButton from "./login/loginPage"
-import { useEffect } from 'react';
+import { useEffect, useContext,useState } from 'react';
 import { gapi } from 'gapi-script';
-import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from "react-router-dom"
+import { Context } from "../Contexts/Context";
 
-// import reportWebVitals from './reportWebVitals';
-// const clientId = "985748016447-spqqd66n7uu0n4d0liap4dmv0dmqof75.apps.googleusercontent.com"
+
 function Login() {
     const navigation = useNavigate()
     const [showPassword, setShowPassword] = useState(false);
+    const {test, setTest} = useContext(Context)
 
     const handleTogglePassword = () => {
         setShowPassword(!showPassword);
     };
+
+    const handleLogin = () =>{
+        setTest(true)
+        navigation('/')
+    } 
     // useEffect(() => {
     //     function start() {
     //         gapi.client.init({
@@ -58,11 +63,11 @@ function Login() {
                                     </button>
                                 </div>
                                 <label className="label">
-                                    <a href="#" className="label-text-alt link link-hover">Forgot password?</a>
+                                    <a href="/login" className="label-text-alt link link-hover">Forgot password?</a>
                                 </label>
                             </div>
                             <div className="form-control mt-6">
-                                <button className="btn btn-primary" onClick={()=>navigation('/')}>Login</button>
+                                <button className="btn btn-primary" onClick={()=> handleLogin()}>Login</button>
                             </div>
                             <div className="divider">OR</div>
                             <LoginButton />
