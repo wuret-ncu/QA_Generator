@@ -10,6 +10,7 @@ import ForgetPassword from './Page/forgetPassword';
 import Navbar from './Component/Navbar';
 import WritingScore from './Page/writingScore';
 import ReadingScore from './Page/readingScore';
+import History from './Page/history';
 
 import './input.css'
 import { ContextProvider } from './Contexts/Context';
@@ -33,6 +34,7 @@ function App() {
             <Route path='/writingScore' element={<WritingScore />}></Route>
             <Route path='/readingScore' element={<ReadingScore />}></Route>
             <Route path='/forgetPassword' element={<ForgetPassword />}></Route>
+            <Route path='/history' element={<History />}></Route>
           </Routes>
         </BrowserRouter>
       </ContextProvider>

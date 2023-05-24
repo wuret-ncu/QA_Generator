@@ -1,9 +1,24 @@
-import React from 'react'
+import React,{useState, useEffect} from 'react'
 import { Pie, Line, Bar } from 'react-chartjs-2';
 import { Chart as ChartJS } from 'chart.js/auto'
 import ReadPicture from '../../picture/Reading.png'
+import Finder from '../../API/Finder'
 
 function Read() {
+  const [correctRate, setCorrectRate] = useState(null);
+
+  useEffect(()=>{
+    const id = localStorage.getItem('user');
+    const fetchData = async () => {
+      try {
+        const response = await Finder.get(`/analysis/read/${id}`);
+        setCorrectRate(response.data.accuracy);
+      } catch (err) {
+        console.log(err)
+      } 
+    };
+    fetchData()
+  },[])
     const data = {
         labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
         datasets: [
@@ -98,7 +113,10 @@ function Read() {
                   <div className="card lg:card-side bg-base-100 shadow h-full">
                       <div className="card-body max-h-div p-5">
                           <div className="text-xl">Reading Correct</div>
-                          <div className="text-3xl ps-5 pt-3">89%</div>
+                          { correctRate ? <div className="text-3xl ps-5 pt-3">{correctRate}%</div> :
+                             <div className="text-3xl ps-5 pt-3">Loading...</div>
+                          }
+                  
                       </div>
                   </div>
                 </div>
@@ -106,7 +124,7 @@ function Read() {
                 <div className="card lg:card-side bg-base-100 shadow h-full">
                   <div className="card-body p-4">
               
-                      <div className="text-xl">Reading Imporvement</div>
+                      <div className="text-xl">Write Imporvement</div>
                       <div className="h-3/4 pt-5">
                         <Line options={options} data={dataLine} style={{ width: 100}} /> 
                       </div>
@@ -129,7 +147,7 @@ function Read() {
   </div>
 
   {/* 第二區塊  要致中*/}
-  <div className="basis-2/5">
+  {/* <div className="basis-2/5">
     <div className="h-1/2 pr-3">
         <div className="card lg:card-side bg-base-100 shadow h-full">
             <div className="card-body p-4">
@@ -174,16 +192,16 @@ function Read() {
         </div>
     </div>
   
-  </div>
+  </div> */}
 
   {/* 第三區塊 */}
-  <div className="basis-1/5 pr-3">
+  <div className="basis-3/5 pr-3">
 
   <div className="card lg:card-side bg-base-100 shadow h-full">
 
   <div className="card-body p-4">
     <div className='flex'>
-        <p>Histiry</p>
+        <p className="text-xl">Histiry</p>
         <input
         type="search"
         name="search"
@@ -193,9 +211,9 @@ function Read() {
     </div>
  
 
-  <div className="overflow-y-auto ">
-  <table className="table w-full">
-    <tbody>
+  <div className="overflow-y-auto">
+  <table className="table w-hull">
+    <tbody className=''>
       {/* row 1 */}
       <tr>
         <td>
