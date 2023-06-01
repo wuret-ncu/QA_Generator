@@ -1,11 +1,25 @@
-import React,{useState, useEffect} from 'react'
+import React,{useState, useEffect, useContext} from 'react'
 import { Pie, Line, Bar } from 'react-chartjs-2';
 import { Chart as ChartJS } from 'chart.js/auto'
 import ReadPicture from '../../picture/Reading.png'
 import Finder from '../../API/Finder'
+import { Context } from "../../Contexts/Context";
+import { useNavigate } from "react-router-dom"
+
 
 function Read() {
   const [correctRate, setCorrectRate] = useState(null);
+  const [writeImprove, setWriteImprove] = useState(null);
+  const [pieLabel, setPieLabel] = useState(null);
+  const [dataLine, setDataLine] = useState({});
+  const [dataPie, setDataPie] = useState({});
+  const [history, setHistory] = useState({});
+
+  const { historyPageId, setHistoryPageId } = useContext(Context);
+  const { historyType, setHistoryType } = useContext(Context);
+  const navigate = useNavigate();
+
+
 
   useEffect(()=>{
     const id = localStorage.getItem('user');
@@ -13,53 +27,89 @@ function Read() {
       try {
         const response = await Finder.get(`/analysis/read/${id}`);
         setCorrectRate(response.data.accuracy);
+        const response1 = await Finder.get(`/analysis/write/${id}`);
+        setWriteImprove(response1.data)
+        const response2 = await Finder.get(`/topic/${id}`);
+        setPieLabel(response2.data)
+        const response3 = await Finder.get(`/analysis/topic/${id}`);
+        console.log(response3.data)
+        setHistory(response3.data)
+        
       } catch (err) {
         console.log(err)
       } 
     };
     fetchData()
   },[])
-    const data = {
-        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+
+
+  useEffect(() => {
+   if(history.length >0){
+    console.log(123)
+   }
+  }, [history]);
+
+  useEffect(() => {
+    if(writeImprove){
+      //建立對應數量的x軸
+      const array = Array(Object.entries(writeImprove).length).fill("a");
+
+      setDataLine({
+        labels: array,
         datasets: [
           {
-            label: '# of Votes',
-            data: [12, 19, 3, 5, 2, 3],
-            backgroundColor: [
-              'rgba(255, 99, 132, 0.2)',
-              'rgba(54, 162, 235, 0.2)',
-              'rgba(255, 206, 86, 0.2)',
-              'rgba(75, 192, 192, 0.2)',
-              'rgba(153, 102, 255, 0.2)',
-              'rgba(255, 159, 64, 0.2)',
-            ],
-            borderColor: [
-              'rgba(255, 99, 132, 1)',
-              'rgba(54, 162, 235, 1)',
-              'rgba(255, 206, 86, 1)',
-              'rgba(75, 192, 192, 1)',
-              'rgba(153, 102, 255, 1)',
-              'rgba(255, 159, 64, 1)',
-            ],
-            borderWidth: 1,
+            labels: 'testdata',
+            fill: true, // 設定填滿顏色
+            data: writeImprove,
+            borderColor: 'rgb(255, 99, 132)',
+            backgroundColor: 'rgba(255, 99, 132, 0.2)',
           },
         ],
-      };
+      })
+    }
+  }, [writeImprove]);
 
-      const labels = ['January', 'February', 'March','January', 'February', 'March']
+useEffect(() => {
+  if(pieLabel){
+    const uniqueArr = [...new Set(pieLabel)];
 
-     const dataLine = {
-      labels,
+    const count = {};
+      pieLabel.forEach(element => {
+      count[element] = count[element] ? count[element] + 1 : 1;
+    });
+    const countArray = Object.values(count);
+
+    setDataPie({
+      labels: uniqueArr,
       datasets: [
         {
-          label: 'Dataset 1',
-          fill: true, // 設定填滿顏色
-          data: ['15','11','12','15','16','14'],
-          borderColor: 'rgb(255, 99, 132)',
-          backgroundColor: 'rgba(255, 99, 132, 0.2)',
+          label: '# of Votes',
+          data: countArray,
+          backgroundColor: [
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(255, 206, 86, 0.2)',
+            'rgba(75, 192, 192, 0.2)',
+            'rgba(153, 102, 255, 0.2)',
+            'rgba(255, 159, 64, 0.2)',
+          ],
+          borderColor: [
+            'rgba(255, 99, 132, 1)',
+            'rgba(54, 162, 235, 1)',
+            'rgba(255, 206, 86, 1)',
+            'rgba(75, 192, 192, 1)',
+            'rgba(153, 102, 255, 1)',
+            'rgba(255, 159, 64, 1)',
+          ],
+          borderWidth: 1,
         },
       ],
-    };
+    });
+  }
+}, [pieLabel]);
+     
+
+// 畫圖設定參數
     const options = {
       //  弧線
       cubicInterpolationMode: 'monotone',
@@ -93,14 +143,24 @@ function Read() {
     
     const optionsPie = {
       maintainAspectRatio: false,
-  responsive: true,
-      plugins: {
-        legend: {
-            display: true,
-            position: 'right'
+      responsive: true,
+          plugins: {
+            legend: {
+                display: true,
+                position: 'right'
+            }
         }
-    }
     };
+
+
+
+function CallHistory(history){
+  setHistoryPageId(history.id);
+  const type = history.UserWriteArticle ? 'write' : 'read';
+  setHistoryType(type);
+  navigate('/history')
+
+}
 
   return (
 <div className="flex h-screen my-5 mx-5" style={{ height: '80vh' }}>
@@ -126,7 +186,10 @@ function Read() {
               
                       <div className="text-xl">Write Imporvement</div>
                       <div className="h-3/4 pt-5">
-                        <Line options={options} data={dataLine} style={{ width: 100}} /> 
+                         { 
+                          Object.keys(dataLine).length > 0 && <Line options={options} data={dataLine} style={{ width: 100}} /> 
+                        } 
+                        
                       </div>
                   </div>
                 </div>
@@ -138,7 +201,9 @@ function Read() {
                       <div className="card-body p-4 ">
                         <div className="text-xl">Practice Topic</div>
                         <div className="h-5/6 pt-3">
-                          <Pie data={data} options={optionsPie} style={{ height: 100}} />
+                          { Object.keys(dataPie).length > 0 && 
+                              <Pie data={dataPie} options={optionsPie} style={{ height: 100}} />
+                          }
                         </div>
                    
                       </div>
@@ -214,47 +279,30 @@ function Read() {
   <div className="overflow-y-auto">
   <table className="table w-hull">
     <tbody className=''>
-      {/* row 1 */}
-      <tr>
-        <td>
-          <div className="flex items-center space-x-3">
-            <div>
-              <div className="font-bold">Title</div>
-              <div className="text-sm opacity-50">Topic</div>
-            </div>
-          </div>
-        </td>
-        <td>
-          <p>1</p>
-        </td>
-      </tr>
-      {/* row 2 */}
-      <tr>
-        <td>
-          <div className="flex items-center space-x-3">
-            <div>
-              <div className="font-bold">Brice Swyre</div>
-              <div className="text-sm opacity-50">China</div>
-            </div>
-          </div>
-        </td>
-        <td>
-          <p>2</p>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <div className="flex items-center space-x-3">
-            <div>
-              <div className="font-bold">Brice Swyre</div>
-              <div className="text-sm opacity-50">China</div>
-            </div>
-          </div>
-        </td>
-        <td>
-          <p>2</p>
-        </td>
-      </tr>
+      {history.length >0 && (
+        history.map((each,index) => {
+          const article = each.UserWriteArticle ? each.UserWriteArticle : each.ReadArticle;
+          const type = each.UserWriteArticle ? 'Write' : "Read";
+  
+          return (
+          <tr key={each.id} onClick={event => CallHistory(each)} >
+            <td>
+              <div className="flex items-center space-x-3">
+                <div>
+                  <div className="text-xl font-bold">{index+1}. {article.title}</div>
+                  <div className="">Topic : {article.topic}</div>
+                  <div className="">Type : {type}</div>
+                  <div className="text-sm opacity-50">{each.createdAt.slice(0,10)}</div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <p>{each.score}</p>
+            </td>
+          </tr>
+        )})
+      )
+      }
     </tbody>
     <tfoot>
       <tr>
