@@ -4,11 +4,14 @@ import { useNavigate } from 'react-router-dom';
 import ReadingScore from "./readingScore";
 // import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import { Context } from "../Contexts/Context";
-import { postRead, postReadArticleQuestion, postReadArticleChoice, getReadArticleQuestion } from "../API/Finder";
+import { postRead, postReadArticleQuestion, postReadArticleChoice } from "../API/Finder";
+// import Finder from "../API/Finder";
+
 
 const options = ["自訂", "Topic 1", "Topic 2", "Topic 3"]; // 下拉式選單的選項
 const allTitle = ["", "Topic 1's Article Title.", "Topic 2's Article Title.", "Topic 3's Article Title."]
 const allArticle = ["", "In 2009, the Taiwu Elementary School Folk Singers were invited to perform in Belgium, France, Germany, and Luxemburg. In 2011, they were voted as one of the world’s top five performance groups by audiences of Japan Broadcasting Corporation’s Amazing Voice program. Recalling the group’s first tour in Europe, Camake Valaule, a physical education teacher and the founder of the Taiwu Elementary School Folk Singers, admitted that he felt very nervous. He was worried that the audience would fall asleep since most of the 75-minute performance was a cappella, that is, singing without instrumental sound. Surprisingly, the audience listened with full focus and high spirits. Camake said, “They told me afterward that through our performance, they had a vision of our country, our village, without having to visit it. This experience greatly boosted our confidence.” According to Camake Valaule, singing traditional ballads has helped students and their parents to re-understand their culture. “It used to be that the only ones who could sing these songs were tribal elders aged between 50 and 60. Now with the children performing the pieces, parents are beginning to ask, ‘Why do we not know how to sing these ballads?’ Many times nowadays, it is the children who teach the songs to their parents, putting back the pieces of a blurred memory.” Winning international fame, however, was neither the original intention nor the main reason why Camake founded the group in 2006. The most important thing was to make children understand why they sing these songs and to preserve and pass on their culture. Referring to the relocation of Taiwu Elementary School and Taiwu Village following Typhoon Morakot in August 2009, Camake said, “We could not take the forest or our houses in the mountains with us; but we were able to bring our culture along. As long as the children are willing to sing, I will always be there for them, singing with them and leading them to experience the meaning of the ballads.”", "Topic 2's Article Content.", "Topic 3's Article Content."]
+let ReadArticleId = 0
 
 function ReadPage() {
   // const history = useHistory();
@@ -56,7 +59,8 @@ function ReadPage() {
       postRead(data)
         .then(response => {
           // 处理成功响应的数据
-          console.log(response.data);
+          ReadArticleId = response.data.id;
+          console.log(response.data.id);
         })
         .catch(error => {
           // 处理请求错误
@@ -120,6 +124,9 @@ function ReadPage() {
 
   // 生成題目和選項
   function generateQuestions() {
+    
+    // const Q = Finder.get("/ReadArtileQuestion/getByTestId",1);
+    // console.log(Q);
     // getReadArticleQuestion()
     const questions = [];
     for (let i = 1; i <= 5; i++) {
