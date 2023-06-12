@@ -6,6 +6,8 @@ import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from "react-router-dom"
 import { Context } from "../Contexts/Context";
 
+import Finder from "../API/Finder.js"; //axios
+
 function Login() {
     const navigation = useNavigate();
     const [showPassword, setShowPassword] = useState(false);
@@ -21,23 +23,42 @@ function Login() {
         const email = document.getElementById('email').value;
         console.log(email)
         const password = document.getElementById('password').value;
-        fetch('http://localhost:8003/api/user/check', {
-            method: "POST",
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, password })
-        })
-            .then(response => response.json())
-            .then(data => {
+        // fetch('http://localhost:8003/api/user/check', {
+        //     method: "POST",
+        //     headers: { 'Content-Type': 'application/json' },
+        //     body: JSON.stringify({ email, password })
+        // })
+        //     .then(response => response.json())
+        //     .then(data => {
+        //         console.log(data);
+        //         if (data.message === "Password is correct.") {
+        //             localStorage.setItem("user", data.data);
+        //             setTest(true);
+        //             setSuccessMessage(data.message)
+        //         }
+        //         else {
+        //             setErrorMessage(data.message);
+        //             setShowAlert(true);
+        //             // 3秒后隐藏警报
+        //             setTimeout(() => {
+        //                 setShowAlert(false);
+        //             }, 3000);
+        //         }
+        //     })
+        //     .catch(error => console.error(error));
+
+        Finder.post('http://localhost:8003/api/user/check', { email, password })
+            .then(response => {
+                const data = response.data;
                 console.log(data);
+
                 if (data.message === "Password is correct.") {
                     localStorage.setItem("user", data.data);
                     setTest(true);
-                    setSuccessMessage(data.message)
-                }
-                else {
+                    setSuccessMessage(data.message);
+                } else {
                     setErrorMessage(data.message);
                     setShowAlert(true);
-                    // 3秒后隐藏警报
                     setTimeout(() => {
                         setShowAlert(false);
                     }, 3000);
