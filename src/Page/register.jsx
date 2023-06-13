@@ -119,6 +119,7 @@ import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { Context } from "../Contexts/Context";
 import Login from "./login";
 
+import Finder from "../API/Finder.js"; //axios
 
 function Register() {
   const navigation = useNavigate()
@@ -143,27 +144,49 @@ function Register() {
     const password = document.getElementById('password').value;
     const confirmPassword = document.getElementById('confirmPassword').value;
 
-    fetch('http://localhost:8003/api/user/create', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, password, email })
+    // fetch('http://localhost:8003/api/user/create', {
+    //   method: 'POST',
+    //   headers: { 'Content-Type': 'application/json' },
+    //   body: JSON.stringify({ username, password, email })
+    // })
+    //   .then(response => response.text())
+    //   .then(data => {
+    //     console.log(data); // 在这里可以对返回的数据进行处理
+    //     if (data === "Account created successfully.") {
+    //       setSuccessMessage(data); // 导航到"/login"
+    //     }
+    //     else {
+    //       setWarningMessage(data);
+    //       setShowAlert(true);
+    //       // 3秒后隐藏警报
+    //       setTimeout(() => {
+    //         setShowAlert(false);
+    //       }, 3000);
+    //     }
+    //   })
+    //   .catch(error => console.error(error));
+
+
+    Finder.post('http://localhost:8003/api/user/create', { username, password, email }, {
+      headers: { 'Content-Type': 'application/json' }
     })
-      .then(response => response.text())
-      .then(data => {
-        console.log(data); // 在这里可以对返回的数据进行处理
+      .then(response => {
+        const data = response.data;
+        console.log(data);
+
         if (data === "Account created successfully.") {
-          setSuccessMessage(data); // 导航到"/login"
-        }
-        else {
+          setSuccessMessage(data);
+          // 導航到"/login"
+        } else {
           setWarningMessage(data);
           setShowAlert(true);
-          // 3秒后隐藏警报
           setTimeout(() => {
             setShowAlert(false);
           }, 3000);
         }
       })
       .catch(error => console.error(error));
+
   }
 
   return (
