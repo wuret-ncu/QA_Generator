@@ -15,7 +15,7 @@ const options = [
   { value: 'nationalExam', label: '會考' },
   { value: 'TOEIC', label: '多益' },
 ];
-const scoringCriteriaOptions = [
+const criteriaOptions = [
   { value: "collegeEntranceExam", label: "College Entrance Exam" },
   { value: "TOEIC", label: "TOEIC" },
   { value: "GED", label: "GED" },
@@ -29,23 +29,23 @@ const scoringCriteriaOptions = [
 function WritingPage() {
   const navigation = useNavigate();
   const [topicOption, setTopicOptions] = useState('');
-  const { selectedOption, setSelectedOption } = useContext(Context);
+  const { topic, setTopic } = useContext(Context);
   const { title, setTitle } = useContext(Context);
-  const { content, setContent } = useContext(Context);
-  const { scoringCriteria, setScoringCriteria } = useContext(Context);
+  const { essay, setEssay } = useContext(Context);
+  const { criteria, setCriteria } = useContext(Context);
   const { wordCount, setWordCount } = useContext(Context);
 
   const handleSubmit = () => {
     navigation("/WritingScore")
   };
 
-  const handleScoringCriteriaChange = (value) => {
-    setScoringCriteria(value);
+  const handleCriteriaChange = (value) => {
+    setCriteria(value);
     console.log(value)
   };
 
-  const handleOptionChange = (value) => {
-    setSelectedOption(value);
+  const handleTopicChange = (value) => {
+    setTopic(value);
     console.log(value)
   };
 
@@ -54,10 +54,10 @@ function WritingPage() {
     console.log(e.target.value)
   };
 
-  const handleContentChange = (e) => {
-    setContent(e.target.value);
+  const handleEssayChange = (e) => {
+    setEssay(e.target.value);
     console.log(e.target.value)
-    setWordCount(content.split(/\s+/).filter((word) => word !== '').length);
+    setWordCount(essay.split(/\s+/).filter((word) => word !== '').length);
   };
 
   useEffect(() => {
@@ -66,7 +66,7 @@ function WritingPage() {
     })
       .then(response => {
         const data = response.data;
-        const options = data.map(topic => ({ value: topic, label: topic }));
+        const options = data.map(topics => ({ value: topics.id, label: topics.topic }));
         setTopicOptions(options);
         console.log(options);
         // 导航到 "/login"
@@ -84,8 +84,8 @@ function WritingPage() {
           <TextareaAutosize
             className="border-2 border-gray-400 rounded-md p-2 w-11/12 focus:outline-none focus:border-blue-500 resize-none"
             placeholder="Start writing here..."
-            value={content}
-            onChange={handleContentChange}
+            value={essay}
+            onChange={handleEssayChange}
             minRows={10}
             maxRows={31}
           />
@@ -96,8 +96,8 @@ function WritingPage() {
           <Select
             className="border-2 border-gray-400 rounded-md focus:outline-none focus:border-blue-500 mb-4"
             options={topicOption}
-            value={selectedOption}
-            onChange={handleOptionChange}
+            value={topic}
+            onChange={handleTopicChange}
             placeholder="Select a topic"
           />
 
@@ -118,8 +118,8 @@ function WritingPage() {
           <div className="col-span-12">
             <p className="text-lg font-bold mb-4">Scoring Criteria</p>
 
-            <RadioGroup className="flex items-center space-x-4 mb-8" name="scoringCriteria" selectedValue={scoringCriteria} onChange={handleScoringCriteriaChange}>
-              {scoringCriteriaOptions.map((option) => (
+            <RadioGroup className="flex items-center space-x-4 mb-8" name="scoringCriteria" selectedValue={criteria} onChange={handleCriteriaChange}>
+              {criteriaOptions.map((option) => (
                 <label key={option.value} className="flex items-center space-x-2 text-lg">
                   <Radio className="text-brand" value={option.value} />
                   <span>{option.label}</span>
