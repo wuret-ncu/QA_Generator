@@ -15,12 +15,6 @@ function SelectBar() {
         <div className='basis-1/6 '>
             <p className="text-2xl ps-5">Analysis</p>
         </div>
-
-        <select className="select select-bordered mr-5 h-1">
-            <option defaultValue='all'>All </option>
-            <option>Read</option>
-            <option>Write</option>
-        </select>
         
     <div className="flex justify-between  p-3">
       <div className="flex items-center">

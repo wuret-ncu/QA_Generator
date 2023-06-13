@@ -5,7 +5,7 @@ import ReadingScore from "./readingScore";
 // import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import { Context } from "../Contexts/Context";
 import { postRead, postReadArticleQuestion, postReadArticleChoice } from "../API/Finder";
-// import Finder from "../API/Finder";
+import Finder from '../API/Finder';
 
 
 const options = ["自訂", "Topic 1", "Topic 2", "Topic 3"]; // 下拉式選單的選項
@@ -14,41 +14,39 @@ const allArticle = ["", "In 2009, the Taiwu Elementary School Folk Singers were 
 let ReadArticleId = 0
 
 function ReadPage() {
-  // const history = useHistory();
   const [selectedOption, setSelectedOption] = useState(options[0]); // 當前選擇的Topic
-  // const [defaultTitle, setdefaultTitle] = useState("請輸入自訂標題"); // 文章標題
-  // const [defaultArticle, setdefaultArticle] = useState("請輸入自訂文章"); // 文章內容
   const [title, setTitle] = useState("請輸入自訂標題"); // 文章標題
-  // const [article, setArticle] = useState("請輸入自訂文章"); // 文章內容
   const [wordCount, setWordCount] = useState(0); // 文章總字數
   const [titleReadOnly, setTitleReadOnly] = useState(false);// 標題唯讀判斷
   const [articleReadOnly, setＡrticleReadOnly] = useState(false);// 標題唯讀判斷
-
   const [showQuestions, setShowQuestions] = useState(false);
   const [showGenerator, setShowGenerator] = useState(true);
-
+  let data = [];
+  let choice = [];
+  const [questions,setQuestion] =  useState([]);
   const { Article, setArticle } = useContext(Context);
 
-  // const handleSubmit = (event) => {
-  //   event.preventDefault();
-  //   navigate({
-  //     pathname: '/readingScore',
-  //     state: { article: article }
-  //   });
-  // };
- function testCreatChoice() {
-  const list = ["A","B","C","D"];
-  for (let x = 1; x <= 5; x++) {
-    for (let y = 0; y < 4; y++) {
-      const data = {question_id: x,choice:list[y]};
-      postReadArticleChoice(data)
+  const fetchQuestion = async () => {
+    try {
+      const response = await Finder.get(`/ReadArtileQuestion/getByTestId/1`);
+      data = response.data;
+    } catch (err) {
+      console.log(err)
     }
-  }
- }
+  };
 
+  const fetchChoice = async (i) => {
+    try {
+      const response = await Finder.get(`/ReadArticleChoice/getByQuestionId/${i}`);
+      console.log('fetch', response.data);
+      choice = response.data;
+    } catch (err) {
+      console.log(err)
+    }
+  };
 
   // 模擬文章生成，每次選擇改變時重新生成文章
-  function ReadingGenerator() {
+  async function ReadingGenerator() {
 
     const a = options.indexOf(selectedOption)
     if (a === 0) {
@@ -85,6 +83,10 @@ function ReadPage() {
     setShowQuestions(true);
     setTitleReadOnly(true);
     setＡrticleReadOnly(true);
+
+    await fetchQuestion();
+    generateQuestions();
+
   }
 
   // onChange事件，更新狀態值Title value
@@ -121,64 +123,58 @@ function ReadPage() {
 
   }, [selectedOption]);
 
-
   // 生成題目和選項
-  function generateQuestions() {
-    
-    // const Q = Finder.get("/ReadArtileQuestion/getByTestId",1);
-    // console.log(Q);
-    // getReadArticleQuestion()
-    const questions = [];
+  async function generateQuestions() {
     for (let i = 1; i <= 5; i++) {
-      const options = [
-        `Option ${i}A`,
-        `Option ${i}B`,
-        `Option ${i}C`,
-        `Option ${i}D`,
-      ];
-      questions.push(
-        <div key={i} className="mb-4">
-          <p className="font-bold mb-2">Question {i}</p>
-          <label className="inline-flex items-center">
-            <input
-              type="radio"
-              className="form-radio text-indigo-600"
-              name={`question${i}`}
-              value={options[0]}
-            />
-            <span className="ml-2">{options[0]}</span>
-          </label>
-          <label className="inline-flex items-center ml-6">
-            <input
-              type="radio"
-              className="form-radio text-indigo-600"
-              name={`question${i}`}
-              value={options[1]}
-            />
-            <span className="ml-2">{options[1]}</span>
-          </label>
-          <label className="inline-flex items-center ml-6">
-            <input
-              type="radio"
-              className="form-radio text-indigo-600"
-              name={`question${i}`}
-              value={options[2]}
-            />
-            <span className="ml-2">{options[2]}</span>
-          </label>
-          <label className="inline-flex items-center ml-6">
-            <input
-              type="radio"
-              className="form-radio text-indigo-600"
-              name={`question${i}`}
-              value={options[3]}
-            />
-            <span className="ml-2">{options[3]}</span>
-          </label>
-        </div>
-      );
+      await fetchChoice(i);
+      console.log(choice);
+      console.log("-----------");
+      setQuestion((prevState) => [...prevState, 
+      <div key={i} className="mb-4">
+      <p className="font-bold mb-2">Question {i}. {data.length>0 ? data[i-1].question : ""}</p>
+      <label className="inline-flex items-center">
+        <input
+          type="radio"
+          className="form-radio text-indigo-600"
+          name={`question${i}`}
+          value={choice.length>0 ? choice[0].choice : ""}
+        />
+        <span className="ml-2">{choice.length>0 ? choice[0].choice : ""}</span>
+      </label>
+      <label className="inline-flex items-center ml-6">
+        <input
+          type="radio"
+          className="form-radio text-indigo-600"
+          name={`question${i}`}
+          value={choice.length>0 ? choice[1].choice : ""}
+        />
+        <span className="ml-2">{choice.length>0 ? choice[1].choice : ""}</span>
+      </label>
+      <label className="inline-flex items-center ml-6">
+        <input
+          type="radio"
+          className="form-radio text-indigo-600"
+          name={`question${i}`}
+          value={choice.length>0 ? choice[2].choice : ""}
+        />
+        <span className="ml-2">{choice.length>0 ? choice[2].choice : ""}</span>
+      </label>
+      <label className="inline-flex items-center ml-6">
+        <input
+          type="radio"
+          className="form-radio text-indigo-600"
+          name={`question${i}`}
+          value={choice.length>0 ? choice[3].choice : ""}
+        />
+        <span className="ml-2">{choice.length>0 ? choice[3].choice : ""}</span>
+      </label>
+    </div>
+    ]);
+      // questions.push(
+        
+      // );
     }
-    return questions;
+    // return questions;
   }
 
   return (
@@ -200,7 +196,7 @@ function ReadPage() {
           className="block w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 mt-4 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
           type="text"
           value={title}
-          rereadOnly={titleReadOnly}
+          readOnly={titleReadOnly}
           onChange={handleTitleChange}
         />
 
@@ -209,7 +205,7 @@ function ReadPage() {
           style={{ resize: "none" }}
           rows="30"
           value={Article}
-          rereadOnly={articleReadOnly}
+          readOnly={articleReadOnly}
           onChange={handleArticleChange}
         ></textarea>
         <p className="text-gray-500 mt-4 text-sm">Word Count: {wordCount}</p>
@@ -225,7 +221,7 @@ function ReadPage() {
       </div>
       <div className={`md:w-1/3 mx-16 my-8 p-4 ${showQuestions ? "" : "hidden"}`}>
         <h2 className="text-2xl font-bold mb-4 ">Questions</h2>
-        {generateQuestions()}
+         {questions}
 
         <div className="flex justify-end col-span-12">
           <Link

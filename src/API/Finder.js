@@ -15,6 +15,6 @@ export const postReadArticleChoice = (data) => {
     return axios.post("http://localhost:8003/api/ReadArticleChoice/create",data)
 };
 
-export const getReadArticleQuestion = (test_id) => {
-    return axios.post("http://localhost:8003/api/ReadArtileQuestion/getByTestId",test_id)
-};
+// export const getReadArticleQuestion = (test_id) => {
+//     return axios.post("http://localhost:8003/api/ReadArtileQuestion/getByTestId",test_id)
+// };
