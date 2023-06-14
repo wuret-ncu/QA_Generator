@@ -6,7 +6,7 @@ import ReadingScore from "./readingScore";
 import { Context } from "../Contexts/Context";
 import { postRead, postReadArticleQuestion, postReadArticleChoice } from "../API/Finder";
 import Finder from '../API/Finder';
-
+// import ChatComponent from '../API/gpt';
 
 const options = ["自訂", "Topic 1", "Topic 2", "Topic 3"]; // 下拉式選單的選項
 const allTitle = ["", "Topic 1's Article Title.", "Topic 2's Article Title.", "Topic 3's Article Title."]
@@ -23,8 +23,24 @@ function ReadPage() {
   const [showGenerator, setShowGenerator] = useState(true);
   let data = [];
   let choice = [];
-  const [questions,setQuestion] =  useState([]);
+  const [questions, setQuestion] = useState([]);
   const { Article, setArticle } = useContext(Context);
+  const [GPTdata, setGPTData] = useState(null);
+
+
+
+  const fetchGPTData = async () => {
+    try {
+      const response = await fetch('http://localhost:3000/openai');
+      const jsonData = await response.json();
+      // setGPTData(jsonData);
+      console.log(jsonData);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+
 
   const fetchQuestion = async () => {
     try {
@@ -125,53 +141,54 @@ function ReadPage() {
 
   // 生成題目和選項
   async function generateQuestions() {
+    setQuestion([]);
     for (let i = 1; i <= 5; i++) {
       await fetchChoice(i);
       console.log(choice);
       console.log("-----------");
-      setQuestion((prevState) => [...prevState, 
+      setQuestion((prevState) => [...prevState,
       <div key={i} className="mb-4">
-      <p className="font-bold mb-2">Question {i}. {data.length>0 ? data[i-1].question : ""}</p>
-      <label className="inline-flex items-center">
-        <input
-          type="radio"
-          className="form-radio text-indigo-600"
-          name={`question${i}`}
-          value={choice.length>0 ? choice[0].choice : ""}
-        />
-        <span className="ml-2">{choice.length>0 ? choice[0].choice : ""}</span>
-      </label>
-      <label className="inline-flex items-center ml-6">
-        <input
-          type="radio"
-          className="form-radio text-indigo-600"
-          name={`question${i}`}
-          value={choice.length>0 ? choice[1].choice : ""}
-        />
-        <span className="ml-2">{choice.length>0 ? choice[1].choice : ""}</span>
-      </label>
-      <label className="inline-flex items-center ml-6">
-        <input
-          type="radio"
-          className="form-radio text-indigo-600"
-          name={`question${i}`}
-          value={choice.length>0 ? choice[2].choice : ""}
-        />
-        <span className="ml-2">{choice.length>0 ? choice[2].choice : ""}</span>
-      </label>
-      <label className="inline-flex items-center ml-6">
-        <input
-          type="radio"
-          className="form-radio text-indigo-600"
-          name={`question${i}`}
-          value={choice.length>0 ? choice[3].choice : ""}
-        />
-        <span className="ml-2">{choice.length>0 ? choice[3].choice : ""}</span>
-      </label>
-    </div>
-    ]);
+        <p className="font-bold mb-2">Question {i}. {data.length > 0 ? data[i - 1].question : ""}</p>
+        <label className="inline-flex items-center">
+          <input
+            type="radio"
+            className="form-radio text-indigo-600"
+            name={`question${i}`}
+            value={choice.length > 0 ? choice[0].choice : ""}
+          />
+          <span className="ml-2">{choice.length > 0 ? choice[0].choice : ""}</span>
+        </label>
+        <label className="inline-flex items-center ml-6">
+          <input
+            type="radio"
+            className="form-radio text-indigo-600"
+            name={`question${i}`}
+            value={choice.length > 0 ? choice[1].choice : ""}
+          />
+          <span className="ml-2">{choice.length > 0 ? choice[1].choice : ""}</span>
+        </label>
+        <label className="inline-flex items-center ml-6">
+          <input
+            type="radio"
+            className="form-radio text-indigo-600"
+            name={`question${i}`}
+            value={choice.length > 0 ? choice[2].choice : ""}
+          />
+          <span className="ml-2">{choice.length > 0 ? choice[2].choice : ""}</span>
+        </label>
+        <label className="inline-flex items-center ml-6">
+          <input
+            type="radio"
+            className="form-radio text-indigo-600"
+            name={`question${i}`}
+            value={choice.length > 0 ? choice[3].choice : ""}
+          />
+          <span className="ml-2">{choice.length > 0 ? choice[3].choice : ""}</span>
+        </label>
+      </div>
+      ]);
       // questions.push(
-        
+
       // );
     }
     // return questions;
@@ -208,6 +225,7 @@ function ReadPage() {
           readOnly={articleReadOnly}
           onChange={handleArticleChange}
         ></textarea>
+        {/* <ChatComponent /> */}
         <p className="text-gray-500 mt-4 text-sm">Word Count: {wordCount}</p>
         <div className={`col-span-12 ${showGenerator ? "" : "hidden"}`}>
           <button
@@ -218,10 +236,19 @@ function ReadPage() {
           </button>
         </div>
 
+        <div className={`col-span-12 ${showGenerator ? "" : "hidden"}`}>
+          <button
+            className="btn text-white btn-primary mt-4"
+            onClick={fetchGPTData}
+          >
+            Test
+          </button>
+        </div>
+
       </div>
       <div className={`md:w-1/3 mx-16 my-8 p-4 ${showQuestions ? "" : "hidden"}`}>
         <h2 className="text-2xl font-bold mb-4 ">Questions</h2>
-         {questions}
+        {questions}
 
         <div className="flex justify-end col-span-12">
           <Link
