@@ -10,13 +10,13 @@ import { Context } from '../Contexts/Context';
 import { WritingContext } from '../Contexts/writingContext';
 import axios from 'axios';
 import openaiFinder from '../API/openaiFinder';
-const { Configuration, OpenAIApi } = require("openai");
+// const { Configuration, OpenAIApi } = require("openai");
 
-const configuration = new Configuration({
-  apiKey: '17f82d1fc6fe4d0ba2a768d8836c3e89',
-});
+// const configuration = new Configuration({
+//   apiKey: '17f82d1fc6fe4d0ba2a768d8836c3e89',
+// });
 
-const openai = new OpenAIApi(configuration);
+//const openai = new OpenAIApi(configuration);
 
 const options = [
   { value: 'collegeEntranceExam', label: '學測' },
