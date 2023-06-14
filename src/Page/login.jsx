@@ -47,7 +47,7 @@ function Login() {
         //     })
         //     .catch(error => console.error(error));
 
-        Finder.post('http://localhost:8003/api/user/check', { email, password })
+        Finder.post('/user/check', { email, password })
             .then(response => {
                 const data = response.data;
                 console.log(data);

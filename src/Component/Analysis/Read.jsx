@@ -1,7 +1,6 @@
 import React,{useState, useEffect, useContext} from 'react'
 import { Pie, Line, Bar } from 'react-chartjs-2';
 import { Chart as ChartJS } from 'chart.js/auto'
-import ReadPicture from '../../picture/Reading.png'
 import Finder from '../../API/Finder'
 import { Context } from "../../Contexts/Context";
 import { useNavigate } from "react-router-dom"
@@ -9,8 +8,8 @@ import { useNavigate } from "react-router-dom"
 
 function Read() {
   const [correctRate, setCorrectRate] = useState(null);
-  const [writeImprove, setWriteImprove] = useState(null);
-  const [pieLabel, setPieLabel] = useState(null);
+  const [writeImprove, setWriteImprove] = useState([]);
+  const [pieLabel, setPieLabel] = useState([]);
   const [dataLine, setDataLine] = useState({});
   const [dataPie, setDataPie] = useState({});
   const [history, setHistory] = useState({});
@@ -50,7 +49,8 @@ function Read() {
   }, [history]);
 
   useEffect(() => {
-    if(writeImprove){
+    if(writeImprove.length>0){
+      console.log(writeImprove)
       //建立對應數量的x軸
       const array = Array(Object.entries(writeImprove).length).fill("a");
 
@@ -70,7 +70,7 @@ function Read() {
   }, [writeImprove]);
 
 useEffect(() => {
-  if(pieLabel){
+  if(pieLabel.length >0){
     const uniqueArr = [...new Set(pieLabel)];
 
     const count = {};
@@ -173,8 +173,8 @@ function CallHistory(history){
                   <div className="card lg:card-side bg-base-100 shadow h-full">
                       <div className="card-body max-h-div p-5">
                           <div className="text-xl">Reading Correct</div>
-                          { correctRate ? <div className="text-3xl ps-5 pt-3">{correctRate}%</div> :
-                             <div className="text-3xl ps-5 pt-3">Loading...</div>
+                          { correctRate ? <div className="text-5xl ps-5 pt-3">{correctRate} %</div> :
+                             <div className="text-3xl ps-5 pt-6"> -- </div>
                           }
                   
                       </div>
@@ -187,7 +187,7 @@ function CallHistory(history){
                       <div className="text-xl">Write Imporvement</div>
                       <div className="h-3/4 pt-5">
                          { 
-                          Object.keys(dataLine).length > 0 && <Line options={options} data={dataLine} style={{ width: 100}} /> 
+                          Object.keys(dataLine).length > 0 ? <Line options={options} data={dataLine} style={{ width: 100}} /> : <div className="text-3xl ps-5 pt-3"> -- </div>
                         } 
                         
                       </div>
@@ -201,8 +201,8 @@ function CallHistory(history){
                       <div className="card-body p-4 ">
                         <div className="text-xl">Practice Topic</div>
                         <div className="h-5/6 pt-3">
-                          { Object.keys(dataPie).length > 0 && 
-                              <Pie data={dataPie} options={optionsPie} style={{ height: 100}} />
+                          { Object.keys(dataPie).length > 0 ? 
+                              <Pie data={dataPie} options={optionsPie} style={{ height: 100}} /> : <div className="text-3xl ps-5 pt-5 px-5"> - No Practice Record - </div>
                           }
                         </div>
                    
@@ -266,50 +266,54 @@ function CallHistory(history){
 
   <div className="card-body p-4">
     <div className='flex'>
-        <p className="text-xl">Histiry</p>
-        <input
+        <p className="text-xl">History</p>
+        {/* <input
         type="search"
         name="search"
         placeholder="Search"
         className="bg-white h-8 rounded-full text-sm focus:outline-none"
-      />
+      /> */}
     </div>
  
 
-  <div className="overflow-y-auto">
-  <table className="table w-hull">
-    <tbody className=''>
-      {history.length >0 && (
+  <div className="overflow-y-auto p-5">
+  <table className="table-auto w-full p-5">
+    <tbody>
+      {history.length >0 ? (
         history.map((each,index) => {
           const article = each.UserWriteArticle ? each.UserWriteArticle : each.ReadArticle;
           const type = each.UserWriteArticle ? 'Write' : "Read";
   
           return (
-          <tr key={each.id} onClick={event => CallHistory(each)} >
-            <td>
-              <div className="flex items-center space-x-3">
+          <tr key={each.id} onClick={event => CallHistory(each)} className='hover:bg-gray-200 p-3'>
+            <td className="w-full">
+              <div className="flex items-center space-x-3 py-2">
                 <div>
                   <div className="text-xl font-bold">{index+1}. {article.title}</div>
                   <div className="">Topic : {article.topic}</div>
-                  <div className="">Type : {type}</div>
                   <div className="text-sm opacity-50">{each.createdAt.slice(0,10)}</div>
                 </div>
               </div>
             </td>
-            <td>
+            <td className="px-5 w-full">
+              <p>{type}</p>
+            </td>
+            <td className="px-5 w-full">
               <p>{each.score}</p>
             </td>
           </tr>
         )})
-      )
+      ) : 
+        <div className="text-3xl ps-5 pt-3 text-center">
+          <div className="py-5">
+          - No History Record -
+          </div>
+          <div>
+          - Please Keep Practice - 
+          </div>
+        </div>
       }
     </tbody>
-    <tfoot>
-      <tr>
-        <th> &lt; </th>
-        <th> &gt; </th>
-      </tr>
-    </tfoot>
   </table>
 </div>
 

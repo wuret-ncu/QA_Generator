@@ -5,7 +5,7 @@ import SelectBar from '../Component/Analysis/SelectBar'
 
 function Analysis() {
   return (
-    <div>
+    <div className='container'>
      <SelectBar />
      <Read />
      {/* <Write /> */}
