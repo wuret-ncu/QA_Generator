@@ -9,14 +9,16 @@ export const ContextProvider = (props) => {
     const [historyPageId, setHistoryPageId] = useState();
     const [historyType, setHistoryType] = useState('');
 
-    const [selectedOption, setSelectedOption] = useState('');
+    const [topic, setTopic] = useState('');
     const [title, setTitle] = useState('');
-    const [content, setContent] = useState('');
-    const [scoringCriteria, setScoringCriteria] = useState('');
+    const [essay, setEssay] = useState('');
+    const [criteria, setCriteria] = useState('');
     const [wordCount, setWordCount] = useState(0);
+    const [score, setScore] = useState(0);
+    const [comment, setComment] = useState('');
 
     return (
-        <Context.Provider value={{ test, setTest, Article, setArticle, historyPageId, setHistoryPageId, historyType, setHistoryType, selectedOption, setSelectedOption, title, setTitle, content, setContent, scoringCriteria, setScoringCriteria, wordCount, setWordCount }}>
+        <Context.Provider value={{ test, setTest, Article, setArticle, historyPageId, setHistoryPageId, historyType, setHistoryType, topic, setTopic, title, setTitle, essay, setEssay, criteria, setCriteria, wordCount, setWordCount,score, setScore, comment, setComment}}>
             {props.children}
         </Context.Provider>
     )

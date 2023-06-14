@@ -5,11 +5,33 @@ import { AiOutlineClose } from 'react-icons/ai';
 import { GrEdit } from 'react-icons/gr';
 import { BsFileText } from 'react-icons/bs';
 import { useContext } from "react";
+import { useNavigate } from "react-router-dom"
 import { Context } from '../Contexts/Context'
+import Finder from '../API/Finder';
 
 
 function WritingScore() {
-  const { selectedOption, title, scoringCriteria, wordCount } = useContext(Context);
+  const navigation = useNavigate();
+  const user_id = localStorage.getItem('user');
+  console.log(user_id)
+  const { topic, title, criteria, wordCount, essay } = useContext(Context);
+  const { score, setScore } = useContext(Context);
+  const { comment, setComment } = useContext(Context);
+  const article_id = topic.value
+  console.log(article_id)
+  const handleEndTest = () => {
+    Finder.post('http://localhost:8003/api/UserWrite/create', {
+      user_id, essay, score, article_id, wordCount, criteria, comment,
+      headers: { 'Content-Type': 'application/json' }
+    })
+      .then(response => {
+        const data = response.data;
+        console.log(data);
+        navigation("/")
+      })
+      .catch(error => console.error(error));
+  };
+
   return (
     <div className="h-screen">
       <div className="mx-auto max-w-3xl p-6">
@@ -22,7 +44,7 @@ function WritingScore() {
           <div className="my-6">
             <div className="flex items-center mb-4 my-4">
               <BsFileText className="inline-block mr-3 text-gray-400" />
-              <h3 className="text-xl font-medium text-gray-900">Topic:<span className="text-gray-600"> {selectedOption.value} </span></h3>
+              <h3 className="text-xl font-medium text-gray-900">Topic:<span className="text-gray-600"> {topic.label} </span></h3>
             </div>
             <div className="flex items-center mb-4 my-4">
               <BsFileText className="inline-block mr-3 text-gray-400" />
@@ -31,12 +53,12 @@ function WritingScore() {
             <div className="flex items-center mb-4 my-4">
               <BsFileText className="inline-block mr-3 text-gray-400" />
               <h3 className="text-xl font-medium text-gray-900">
-                Score Criteria:<span className="text-gray-600"> {scoringCriteria}</span>
+                Score Criteria:<span className="text-gray-600"> {criteria}</span>
               </h3>
             </div>
             <div className="flex items-center mb-4 my-4">
               <BsFileText className="inline-block mr-3 text-gray-400" />
-              <h3 className="text-xl font-medium text-gray-900">Comment:</h3>
+              <h3 className="text-xl font-medium text-gray-900">Comment:{comment}</h3>
             </div>
             <p className="text-xl border border-gray-300 text-gray-600 rounded-md p-4 my-4">Your article was clear and well-organized, with good grammar and accuracy. However, it lacked originality and didn't offer any new insights. Overall, a solid effort. Your article was clear and well-organized, with good grammar and accuracy. However, it lacked originality and didn't offer any new insights. Overall, a solid effort.</p>
             <div className="flex items-center my-4">
@@ -49,16 +71,15 @@ function WritingScore() {
               <div className="flex items-center my-4">
                 <BsFileText className="inline-block mr-3 text-gray-400" />
                 <h3 className="text-xl font-medium text-center">
-                  Score: <span className="text-2xl text-red-500">85</span> <span className="text-gray-600"> / 100</span>
+                  Score: <span className="text-2xl text-red-500">{score}</span> <span className="text-gray-600"> / 100</span>
                 </h3>
               </div>
               <div className="items-end">
-                <Link
-                  to="/"
-                  className="btn text-white btn-primary"
+                <button className="btn text-white btn-primary"
+                  onClick={handleEndTest}
                 >
                   End Test
-                </Link>
+                </button>
               </div>
             </div>
           </div>
