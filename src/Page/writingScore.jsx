@@ -20,8 +20,9 @@ function WritingScore() {
   const article_id = topic.value
   console.log(article_id)
   const handleEndTest = () => {
+    console.log(user_id, essay, score, article_id, title, wordCount, criteria, comment)
     Finder.post('http://localhost:8003/api/UserWrite/create', {
-      user_id, essay, score, article_id, wordCount, criteria, comment,
+      user_id, essay, score, article_id, title, wordCount, criteria, comment,
       headers: { 'Content-Type': 'application/json' }
     })
       .then(response => {
@@ -58,9 +59,9 @@ function WritingScore() {
             </div>
             <div className="flex items-center mb-4 my-4">
               <BsFileText className="inline-block mr-3 text-gray-400" />
-              <h3 className="text-xl font-medium text-gray-900">Comment:{comment}</h3>
+              <h3 className="text-xl font-medium text-gray-900">Comment:</h3>
             </div>
-            <p className="text-xl border border-gray-300 text-gray-600 rounded-md p-4 my-4">Your article was clear and well-organized, with good grammar and accuracy. However, it lacked originality and didn't offer any new insights. Overall, a solid effort. Your article was clear and well-organized, with good grammar and accuracy. However, it lacked originality and didn't offer any new insights. Overall, a solid effort.</p>
+            <p className="text-xl border border-gray-300 text-gray-600 rounded-md p-4 my-4">{comment}</p>
             <div className="flex items-center my-4">
               <BsFileText className="inline-block mr-3 text-gray-400" />
               <h3 className="text-xl font-medium text-gray-900">
