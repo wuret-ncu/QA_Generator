@@ -18,15 +18,15 @@ import openaiFinder from '../API/openaiFinder';
 
 //const openai = new OpenAIApi(configuration);
 
-const options = [
-  { value: 'collegeEntranceExam', label: '學測' },
-  { value: 'nationalExam', label: '會考' },
-  { value: 'TOEIC', label: '多益' },
-];
+// const options = [
+//   { value: 'collegeEntranceExam', label: '學測' },
+//   { value: 'nationalExam', label: '會考' },
+//   { value: 'TOEIC', label: '多益' },
+// ];
 const criteriaOptions = [
-  { value: "collegeEntranceExam", label: "College Entrance Exam" },
   { value: "TOEIC", label: "TOEIC" },
-  { value: "GED", label: "GED" },
+  { value: "TOEFL", label: "TOEFL" },
+  { value: "IELTS", label: "IELTS" },
   // { value: "other", label: "other" },
 ];
 

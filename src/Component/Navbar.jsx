@@ -28,7 +28,7 @@ function Navbar() {
     <div>
       <div className="navbar bg-base-100 bg-theme-green">
         <div className="flex-1">
-          <a href="/" className="btn btn-ghost normal-case text-xl text-white">daisyUI</a>
+          <a href="/" className="btn btn-ghost normal-case text-xl text-white">QAGenerator</a>
         </div>
         <div className="flex-none">
           <ul className="menu menu-horizontal px-1 text-white">
