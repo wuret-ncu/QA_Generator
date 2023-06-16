@@ -6,8 +6,11 @@ export const ContextProvider = (props) => {
 
     const [test, setTest] = useState(false)
     const [Article, setArticle] = useState('請輸入自訂文章');
+    const [history, setHistory] = useState([]);
     const [historyPageId, setHistoryPageId] = useState();
     const [historyType, setHistoryType] = useState('');
+    const [historyIndex, setHistoryIndex] = useState();
+    
 
     const [topic, setTopic] = useState('');
     const [title, setTitle] = useState('');
@@ -18,7 +21,7 @@ export const ContextProvider = (props) => {
     const [comment, setComment] = useState('');
 
     return (
-        <Context.Provider value={{ test, setTest, Article, setArticle, historyPageId, setHistoryPageId, historyType, setHistoryType, topic, setTopic, title, setTitle, essay, setEssay, criteria, setCriteria, wordCount, setWordCount,score, setScore, comment, setComment}}>
+        <Context.Provider value={{ test, setTest, Article, setArticle, history, setHistory, historyPageId, setHistoryPageId, historyType, setHistoryType, historyIndex, setHistoryIndex, topic, setTopic, title, setTitle, essay, setEssay, criteria, setCriteria, wordCount, setWordCount,score, setScore, comment, setComment}}>
             {props.children}
         </Context.Provider>
     )

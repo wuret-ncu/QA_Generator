@@ -12,8 +12,10 @@ function Read() {
   const [pieLabel, setPieLabel] = useState([]);
   const [dataLine, setDataLine] = useState({});
   const [dataPie, setDataPie] = useState({});
-  const [history, setHistory] = useState({});
+  // const [history, setHistory] = useState({});
 
+  const { history, setHistory } = useContext(Context);
+  const { historyIndex, setHistoryIndex } = useContext(Context);
   const { historyPageId, setHistoryPageId } = useContext(Context);
   const { historyType, setHistoryType } = useContext(Context);
   const navigate = useNavigate();
@@ -154,7 +156,8 @@ useEffect(() => {
 
 
 
-function CallHistory(history){
+function CallHistory(history, index){
+  setHistoryIndex(index);
   setHistoryPageId(history.id);
   const type = history.UserWriteArticle ? 'write' : 'read';
   setHistoryType(type);
@@ -173,7 +176,7 @@ function CallHistory(history){
                   <div className="card lg:card-side bg-base-100 shadow h-full">
                       <div className="card-body max-h-div p-5">
                           <div className="text-xl">Reading Correct</div>
-                          { correctRate ? <div className="text-5xl ps-5 pt-3">{correctRate} %</div> :
+                          { correctRate ? <div className="text-5xl ps-5 pt-3">{Math.round(correctRate*100)/100} %</div> :
                              <div className="text-3xl ps-5 pt-6"> -- </div>
                           }
                   
@@ -285,7 +288,7 @@ function CallHistory(history){
           const type = each.UserWriteArticle ? 'Write' : "Read";
   
           return (
-          <tr key={each.id} onClick={event => CallHistory(each)} className='hover:bg-gray-200 p-3'>
+          <tr key={index} onClick={event => CallHistory(each, index)} className='hover:bg-gray-200 p-3'>
             <td className="w-full">
               <div className="flex items-center space-x-3 py-2">
                 <div>
@@ -304,6 +307,8 @@ function CallHistory(history){
           </tr>
         )})
       ) : 
+      <tr>
+        <td>
         <div className="text-3xl ps-5 pt-3 text-center">
           <div className="py-5">
           - No History Record -
@@ -312,6 +317,8 @@ function CallHistory(history){
           - Please Keep Practice - 
           </div>
         </div>
+        </td>
+      </tr>
       }
     </tbody>
   </table>
