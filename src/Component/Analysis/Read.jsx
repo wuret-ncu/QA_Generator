@@ -26,8 +26,8 @@ function Read() {
     const id = localStorage.getItem('user');
     const fetchData = async () => {
       try {
-        //const response = await Finder.get(`/analysis/read/${id}`);
-        //setCorrectRate(response.data.accuracy);
+        const response = await Finder.get(`/analysis/read/${id}`);
+        setCorrectRate(response.data.accuracy);
         const response1 = await Finder.get(`/analysis/write/${id}`);
         setWriteImprove(response1.data)
         const response2 = await Finder.get(`/topic/${id}`);
@@ -284,7 +284,8 @@ function CallHistory(history, index){
     <tbody>
       {history.length >0 ? (
         history.map((each,index) => {
-          const article = each.UserWriteArticle ? each.UserWriteArticle : each.ReadArticle;
+          const article = each.UserWriteArticle ? each : each.ReadArticle;
+          const topic = each.UserWriteArticle ? each.UserWriteArticle.topic : each.ReadArticle.topic;
           const type = each.UserWriteArticle ? 'Write' : "Read";
   
           return (
@@ -293,7 +294,7 @@ function CallHistory(history, index){
               <div className="flex items-center space-x-3 py-2">
                 <div>
                   <div className="text-xl font-bold">{index+1}. {article.title}</div>
-                  <div className="">Topic : {article.topic}</div>
+                  <div className="">Topic : {topic}</div>
                   <div className="text-sm opacity-50">{each.createdAt.slice(0,10)}</div>
                 </div>
               </div>

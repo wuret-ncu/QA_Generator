@@ -52,13 +52,9 @@ function History() {
     const fetchWrite = async () => {
       console.log('test')
       try {
-        const response = await Finder.get(`/history/write/${historyPageId}`);
-        response.data[0].ReadArticleQuestion.sort((a, b) => a.question.localeCompare(b.question));
-        for (let i = 0 ; i<5 ;i++){
-          response.data[0].ReadArticleQuestion[i].ReadArticleChoice.sort((a, b) => a.choice.localeCompare(b.choice));
-        }
+        const response = await Finder.get(`/history/write/${historyPageId}`);        
         setData(response.data)
-        
+
       } catch (err) {
         console.log(err)
       } 
@@ -103,7 +99,7 @@ function History() {
             </div>
             <div className="flex items-center mb-4 my-4">
               <BsFileText className="inline-block mr-3 text-gray-400" />
-              <h3 className="text-xl font-medium text-gray-900">Title : <span className="text-gray-600"> {data[0].UserWriteArticle.title} </span></h3>
+              <h3 className="text-xl font-medium text-gray-900">Title : <span className="text-gray-600"> {data[0].title} </span></h3>
             </div>
             <div className="flex items-center mb-4 my-4">
               <BsFileText className="inline-block mr-3 text-gray-400" />
@@ -119,7 +115,7 @@ function History() {
             <div className="flex items-center my-4">
               <BsFileText className="inline-block mr-3 text-gray-400" />
               <h3 className="text-xl font-medium text-gray-900">
-                Word Count : <span className="text-gray-600"> {data[0].words} </span>
+                Word Count : <span className="text-gray-600"> {data[0].wordCount} </span>
               </h3>
             </div>
             <div className="flex items-center my-4">
@@ -147,11 +143,11 @@ function History() {
               <p className="font-bold mb-2">{i+1}. {qa[i].question}</p>
               { options.map((each, index) => {return( 
                 <label key={index} className={`inline-flex items-center ml-6 ${
-                  qa[i].user_answer === each.choice
+                  qa[i].user_answer === each.choice.slice(0,1)
                     ? qa[i].user_answer === qa[i].answer
                       ? 'text-green-500' // 使用者答案和正確答案一樣，設定綠色
                       : 'text-red-500' // 使用者答案和正確答案不一樣，設定紅色
-                    : qa[i].answer === each.choice
+                    : qa[i].answer === each.choice.slice(0,1)
                     ? 'text-green-500' // 使用者未選擇該答案，但是該答案是正確答案，設定綠色
                     : ''
                 }`}>
@@ -161,7 +157,7 @@ function History() {
                   className="form-radio text-indigo-600 text-green-500"
                   name={`question${i}`}
                   value={each.choice}
-                  checked={each.choice === qa[i].user_answer}
+                  checked={each.choice.slice(0,1) === qa[i].user_answer}
                   disabled
                 />
                 <span className="ml-2">{each.choice}</span>
@@ -261,7 +257,9 @@ function History() {
         <div className="container flex mx-auto">
             <div className="w-1/2 p-8">
                 <h2 className="text-2xl font-bold mb-4 ">Article</h2>
-                <div className="text-xl ">Title :  {title}</div>
+                {historyType === 'read' &&
+                 <div className="text-xl ">Title :  {title}</div>
+                }
                 <textarea
                     className="block w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 mt-4 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
                     style={{resize: "none"}}
