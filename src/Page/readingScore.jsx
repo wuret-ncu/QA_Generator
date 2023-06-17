@@ -157,7 +157,7 @@ function ReadingScore(props) {
         <textarea
           className="block w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 mt-4 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
           style={{ resize: "none" }}
-          rows="15"
+          rows="20"
           value={Article}
           readOnly
         />
@@ -165,7 +165,7 @@ function ReadingScore(props) {
         <textarea
           className="block w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 mt-4 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
           style={{ resize: "none" }}
-          rows="15"
+          rows="20"
           value={TranslateArticle}
           readOnly
         />
