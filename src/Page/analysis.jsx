@@ -1,5 +1,5 @@
 import React from 'react'
-import Write from '../Component/Analysis/Wirte'
+import Write from '../Component/Analysis/Write'
 import Read from '../Component/Analysis/Read'
 import SelectBar from '../Component/Analysis/SelectBar'
 

@@ -26,8 +26,8 @@ function Read() {
     const id = localStorage.getItem('user');
     const fetchData = async () => {
       try {
-        const response = await Finder.get(`/analysis/read/${id}`);
-        setCorrectRate(response.data.accuracy);
+        //const response = await Finder.get(`/analysis/read/${id}`);
+        //setCorrectRate(response.data.accuracy);
         const response1 = await Finder.get(`/analysis/write/${id}`);
         setWriteImprove(response1.data)
         const response2 = await Finder.get(`/topic/${id}`);
@@ -187,7 +187,7 @@ function CallHistory(history, index){
                 <div className="card lg:card-side bg-base-100 shadow h-full">
                   <div className="card-body p-4">
               
-                      <div className="text-xl">Write Imporvement</div>
+                      <div className="text-xl">Write Improvement</div>
                       <div className="h-3/4 pt-5">
                          { 
                           Object.keys(dataLine).length > 0 ? <Line options={options} data={dataLine} style={{ width: 100}} /> : <div className="text-3xl ps-5 pt-3"> -- </div>
@@ -219,7 +219,7 @@ function CallHistory(history, index){
     <div className="h-1/2 pr-3">
         <div className="card lg:card-side bg-base-100 shadow h-full">
             <div className="card-body p-4">
-                <div className="text-xl">Reading Imporvement</div>
+                <div className="text-xl">Reading Improvement</div>
                 <div className="h-5/6 pt-3">
                   <Bar data={dataLine} />
                 </div>

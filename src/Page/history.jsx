@@ -29,7 +29,7 @@ function History() {
           setTitle(data[0].ReadArticle.title)
         }else{
           setArticle(data[0].essay)
-          setTitle(data[0].UserWriteArticle.title)
+          setTitle(data[0].title)
         }
       }
    

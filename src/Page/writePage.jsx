@@ -122,7 +122,7 @@ function WritingPage() {
       const scorePromise = openaiFinder.post(
         'https://qag02.openai.azure.com/openai/deployments/QAG02/completions?api-version=2022-12-01&api-key=1343d3e41dd14a498bb8461abd5d59dc',
         {
-          prompt: `Use TOEIC's writing scoring standard to objectively score the above composition, including the accuracy of vocabulary and grammar, coherence and structure, logical thinking, completeness and coherence of information, etc., out of 100, what score would you give, and output directly Score will do, must not contain anything other than numbers:.
+          prompt: `Use ${criteria}'s writing scoring standard to objectively score the above composition, including the accuracy of vocabulary and grammar, coherence and structure, logical thinking, completeness and coherence of information, etc., out of 100, what score would you give, and output directly Score will do, must not contain anything other than numbers:.
           The following are examples:
           input:
           Topic: Nature Science
@@ -151,12 +151,22 @@ function WritingPage() {
       const commentPromise = openaiFinder.post(
         'https://qag02.openai.azure.com/openai/deployments/QAG02/completions?api-version=2022-12-01&api-key=1343d3e41dd14a498bb8461abd5d59dc',
         {
-          prompt: `Use TOEIC's writing review standards to objectively comment on the following compositions, including vocabulary and grammar accuracy, coherence and structure, logical thinking, information integrity and coherence, etc. Please give suggestions and comment within 100 words:
-            Topic: ${topic}
-            Title: ${title}
-            Essay: ${essay}`,
+          prompt: `Use ${criteria}'s writing review standards to objectively comment on the following compositions, including vocabulary and grammar accuracy, coherence and structure, logical thinking, information integrity and coherence, etc. Please give suggestion and comment within 75 words limits, start with 'This essay':
+          The following are examples:
+          input:
+          Topic: Nature Science 
+          Title: The Galaxy: A Cosmic Marvel
+          Essay: The galaxy, a celestial wonderland of stars and mysteries, has fascinated humanity for centuries. Spanning vast distances, it mesmerizes with its breathtaking beauty and intrigues with its enigmas. From the majestic Milky Way, our cosmic home, to the diverse array of galaxies, each with its own unique formation, the galaxy holds endless fascination. Stellar nurseries, where stars are born, captivate with their ethereal splendor. The discovery of exoplanets beyond our solar system fuels our quest for other habitable worlds. Yet, amidst these marvels, dark matter and dark energy remain elusive, intriguing researchers with their invisible presence. The galaxy stands as a testament to the limitless wonders of the universe, inspiring us to explore and unravel its mysteries. Its grandeur serves as a constant reminder of our place in the vast cosmic tapestry. Let us gaze at the night sky in awe, ever humbled by the magnificence of the galaxy and driven by the unquenchable thirst for knowledge, to explore the cosmos that lies beyond.
+          output: This essay showcases a rich vocabulary and demonstrates strong grammar accuracy. The use of descriptive language effectively captures the reader's attention and conveys the beauty and intrigue of the galaxy. The essay maintains a coherent structure, with clear topic sentences that lead smoothly into supporting details. The logical thinking is evident as the writer discusses various aspects of the galaxy, highlighting its wonders and mysteries. The information presented shows integrity and coherence, with the inclusion of stellar nurseries, exoplanets, dark matter, and dark energy. To enhance the essay, the writer could provide more specific examples or scientific findings to support their claims. Overall, this composition successfully evokes a sense of wonder and inspires the reader to explore the cosmic marvels of the universe.
+          
+          Actual input:
+          Topic: ${topic}
+          Title: ${title}
+          Essay: ${essay}
+          output:`
+          ,
           temperature: 0.7,
-          max_tokens: 100,
+          max_tokens: 200,
           top_p: 1,
           frequency_penalty: 0,
           presence_penalty: 0,
@@ -169,9 +179,8 @@ function WritingPage() {
       );
 
       const [scoreResponse, commentResponse] = await Promise.all([scorePromise, commentPromise]);
-
-      const score = scoreResponse.data.choices[0].text;
-      const comment = commentResponse.data.choices[0].text;
+      const score = scoreResponse.data.choices[0].text.replace('<|im_end|>', '');
+      const comment = commentResponse.data.choices[0].text.replace('<|im_end|>', '');
 
       console.log(score);
       console.log(comment)
