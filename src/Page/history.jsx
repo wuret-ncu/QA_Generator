@@ -39,6 +39,10 @@ function History() {
     const fetchRead = async () => {
       try {
         const response = await Finder.get(`/history/read/${historyPageId}`);
+        response.data[0].ReadArticleQuestion.sort((a, b) => a.question.localeCompare(b.question));
+        for (let i = 0 ; i<5 ;i++){
+          response.data[0].ReadArticleQuestion[i].ReadArticleChoice.sort((a, b) => a.choice.localeCompare(b.choice));
+        }
         setData(response.data);
       } catch (err) {
         console.log(err)
@@ -49,6 +53,10 @@ function History() {
       console.log('test')
       try {
         const response = await Finder.get(`/history/write/${historyPageId}`);
+        response.data[0].ReadArticleQuestion.sort((a, b) => a.question.localeCompare(b.question));
+        for (let i = 0 ; i<5 ;i++){
+          response.data[0].ReadArticleQuestion[i].ReadArticleChoice.sort((a, b) => a.choice.localeCompare(b.choice));
+        }
         setData(response.data)
         
       } catch (err) {

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
 import ReadingScore from "./readingScore";
+// import { useNavigate } from "react-router-dom"
 // import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import { Context } from "../Contexts/Context";
 import { postRead, postReadArticleQuestion, postReadArticleChoice } from "../API/Finder";
@@ -16,6 +17,9 @@ const allArticle = ["", "In 2009, the Taiwu Elementary School Folk Singers were 
 let ReadArticleId = 0
 
 function ReadPage() {
+
+  const { } = useContext(Context);
+  const navigation = useNavigate();
   const [selectedOption, setSelectedOption] = useState(options[0]); // 當前選擇的Topic
   const [title, setTitle] = useState("請輸入自訂標題"); // 文章標題
   const [wordCount, setWordCount] = useState(0); // 文章總字數
@@ -43,12 +47,12 @@ function ReadPage() {
 
 
   // let answerL = [];
-  let userAnswerL = ["","","","",""];
+  let userAnswerL = ["", "", "", "", ""];
   const [answerList, setanswerList] = useState([]);
-  const [userAnswerList, setuserAnswerList] = useState([]);
-
-  const [TestId,setTestId] = useState(0);
-  const [QuestionId,setQuestionId] = useState(0);
+  const [userAnswerList, setuserAnswerList] = useState(["","","","",""]);
+  const [canSubmit, setCanSubmit] = useState(false);
+  const [TestId, setTestId] = useState(0);
+  const [QuestionId, setQuestionId] = useState(0);
   // const [selectedValue, setSelectedValue] = useState('');
   // const [questionNumber, setQuestionNumber] = useState(0);
 
@@ -66,43 +70,48 @@ function ReadPage() {
     }
   };
 
-useEffect(()=>{
-  if(TestId !=0){
-    const create = async() =>{
-      for (let i = 0;i < 5; i++){
-        console.log(questionList[i], answerList[i]);
-        const response = await Finder.post("/ReadArticleQuestion/create", { test_id:TestId, question:questionList[i], answer:answerList[i], user_answer:userAnswerList[i] });
-  console.log(response.data);
-        createChoice(response.data.id, choiceAList[i]);
-        createChoice(response.data.id, choiceBList[i]);
-        createChoice(response.data.id, choiceCList[i]);
-        createChoice(response.data.id, choiceDList[i]);
+  useEffect(() => {
+    if (TestId != 0) {
+      console.log(TestId);
+      console.log("===============");
+      const create = async () => {
+        for (let i = 0; i < 5; i++) {
+          console.log(questionList[i], answerList[i]);
+          const response = await Finder.post("/ReadArticleQuestion/create", { test_id: TestId, question: questionList[i], answer: answerList[i], user_answer: userAnswerList[i] });
+          console.log(response.data);
+          createChoice(response.data.id, choiceAList[i]);
+          createChoice(response.data.id, choiceBList[i]);
+          createChoice(response.data.id, choiceCList[i]);
+          createChoice(response.data.id, choiceDList[i]);
+        }
+
+        navigation("/readingScore");
       }
-    } 
-    
-    create()
-    //createQuestion();
-  }
-},[TestId])
 
-  const createQuestion = async (test_id, question, answer, user_answer) => {
-    try {
-      const response = await Finder.post("/ReadArticleQuestion/create", {
-        test_id, question, answer, user_answer,
-        headers: { 'Content-Type': 'application/json' }
-      });
-      data = response.data;
-      //setQuestionId(response.data.id);
-    } catch (err) {
-      console.log(err)
+      create()
+      // navigation("/readingScore");
+      //createQuestion();
     }
-  };
+  }, [TestId])
 
-  useEffect(()=>{
-    if(QuestionId !=0){
+  // const createQuestion = async (test_id, question, answer, user_answer) => {
+  //   try {
+  //     const response = await Finder.post("/ReadArticleQuestion/create", {
+  //       test_id, question, answer, user_answer,
+  //       headers: { 'Content-Type': 'application/json' }
+  //     });
+  //     data = response.data;
+  //     //setQuestionId(response.data.id);
+  //   } catch (err) {
+  //     console.log(err)
+  //   }
+  // };
+
+  useEffect(() => {
+    if (QuestionId != 0) {
       createChoice();
     }
-  },[QuestionId])
+  }, [QuestionId])
 
   const createChoice = async (question_id, choice) => {
     try {
@@ -118,9 +127,23 @@ useEffect(()=>{
 
   const handleOptionChange = (event, questionIndex) => {
     userAnswerL[questionIndex] = event.target.value;
-    setuserAnswerList(userAnswerL);
-    console.log(userAnswerList);
+    if(userAnswerL.every(answer => answer !== "")){
+      setuserAnswerList(userAnswerL);
+      setCanSubmit(true);
+    };
+    console.log(userAnswerL);
+   
+
+    // const SubmitBool = flase;
+    
   };
+
+  useEffect(()=>{
+    // console.log(userAnswerList);
+    // const SubmitBool = userAnswerList.every(answer => answer !== "");
+    // console.log(SubmitBool);
+    // setCanSubmit(SubmitBool);
+  },[userAnswerList]);
 
   const createTest = async () => {
 
@@ -129,13 +152,13 @@ useEffect(()=>{
       let correctNum = 0;
       console.log(answerList);
       console.log(userAnswerList);
-      for (let i = 0;i < 5; i++){
-        if (answerList[i] == userAnswerList[i]){
-          correctNum+=1;
+      for (let i = 0; i < 5; i++) {
+        if (answerList[i] == userAnswerList[i]) {
+          correctNum += 1;
         }
       }
 
-      createUserRead(user_id,1,correctNum*20,correctNum);
+      await createUserRead(user_id, 1, correctNum * 20, correctNum);
 
       // for (let i = 0;i < 5; i++){
       //   await createQuestion(TestId, questionList[i], answerList[i], userAnswerList[i]);
@@ -151,6 +174,8 @@ useEffect(()=>{
     catch (err) {
       console.log(err)
     }
+
+
   }
 
   // const fetchGPT = async () => {
@@ -164,18 +189,18 @@ useEffect(()=>{
   //   }
   // };
 
-useEffect(()=>{
-  if(choiceAList.length > 0){
-    generateQuestions();
-  }
-},[choiceAList, choiceBList, choiceCList, choiceDList])
+  useEffect(() => {
+    if (choiceAList.length > 0) {
+      generateQuestions();
+    }
+  }, [choiceAList, choiceBList, choiceCList, choiceDList])
 
   const fetchGPTData = async (prompt) => {
     await Finder.post(
       'https://qag02.openai.azure.com/openai/deployments/QAG02/completions?api-version=2022-12-01&api-key=1343d3e41dd14a498bb8461abd5d59dc',
       {
         prompt:
-         `Generate a multiple-choice quiz from the text below. The quiz must contain 5 questions. Each correct answer can't be in the same option(A, B, C, D) and each answer choice should be on a separate line, with a blank line separating each question. Finally, give me the correct answer to each question.\n\n'''
+          `Generate a multiple-choice quiz from the text below. The quiz must contain 5 questions. Each correct answer can't be in the same option(A, B, C, D) and each answer choice should be on a separate line, with a blank line separating each question. Finally, give me the correct answer to each question.\n\n'''
          Example input:
          A neutron star is the collapsed core of a massive supergiant star, which had a total mass of between 10 and 25 solar masses, possibly more if the star was especially metal-rich. Neutron stars are the smallest and densest stellar objects, excluding black holes and hypothetical white holes, quark stars, and strange stars. Neutron stars have a radius on the order of 10 kilometers (6.2 mi) and a mass of about 1.4 solar masses. They result from the supernova explosion of a massive star, combined with gravitational collapse, that compresses the core past white dwarf star density to that of atomic nuclei.
          
@@ -246,25 +271,6 @@ useEffect(()=>{
         console.error(error);
       })
   }
-
-  const fetchQuestion = async () => {
-    try {
-      const response = await Finder.get(`/ReadArtileQuestion/getByTestId/1`);
-      data = response.data;
-    } catch (err) {
-      console.log(err)
-    }
-  };
-
-  const fetchChoice = async (i) => {
-    try {
-      const response = await Finder.get(`/ReadArticleChoice/getByQuestionId/${i}`);
-      console.log('fetch', response.data);
-      choice = response.data;
-    } catch (err) {
-      console.log(err)
-    }
-  };
 
   // 模擬文章生成，每次選擇改變時重新生成文章
   async function ReadingGenerator() {
@@ -353,7 +359,7 @@ useEffect(()=>{
       setQuestion((prevState) => [...prevState,
       <div key={i} className="mb-4">
         {/* <p className="font-bold mb-2">Question {i}. {data.length > 0 ? data[i - 1].question : ""}</p> */}
-        <p className="font-bold mb-2">{questionList[i-1]}</p>
+        <p className="font-bold mb-2">{questionList[i - 1]}</p>
         <label className="inline-flex items-center">
           <input
             type="radio"
@@ -362,10 +368,10 @@ useEffect(()=>{
             // value={choice.length > 0 ? choice[0].choice : ""}
             value="A"
             // checked={selectedValue === choiceAList[i-1]}
-            onChange={(event) => handleOptionChange(event, i-1)}
+            onChange={(event) => handleOptionChange(event, i - 1)}
           />
           {/* <span className="ml-2">{choice.length > 0 ? choice[0].choice : ""}</span> */}
-          <span className="ml-2">{choiceAList[i-1]}</span>
+          <span className="ml-2">{choiceAList[i - 1]}</span>
         </label>
         <label className="inline-flex items-center ml-6">
           <input
@@ -376,10 +382,10 @@ useEffect(()=>{
             value="B"
             // checked={target.value}
             // checked={selectedValue === choiceBList[i-1]}
-            onChange={(event) => handleOptionChange(event, i-1)}
+            onChange={(event) => handleOptionChange(event, i - 1)}
           />
           {/* <span className="ml-2">{choice.length > 0 ? choice[1].choice : ""}</span> */}
-          <span className="ml-2">{choiceBList[i-1]}</span>
+          <span className="ml-2">{choiceBList[i - 1]}</span>
         </label>
         <label className="inline-flex items-center ml-6">
           <input
@@ -388,11 +394,11 @@ useEffect(()=>{
             name={`question${i}`}
             // value={choice.length > 0 ? choice[2].choice : ""}
             // checked={selectedValue === choiceCList[i-1]}
-            onChange={(event) => handleOptionChange(event, i-1)}
+            onChange={(event) => handleOptionChange(event, i - 1)}
             value="C"
           />
           {/* <span className="ml-2">{choice.length > 0 ? choice[2].choice : ""}</span> */}
-          <span className="ml-2">{choiceCList[i-1]}</span>
+          <span className="ml-2">{choiceCList[i - 1]}</span>
         </label>
         <label className="inline-flex items-center ml-6">
           <input
@@ -402,10 +408,10 @@ useEffect(()=>{
             // value={choice.length > 0 ? choice[3].choice : ""}
             value="D"
             // checked={selectedValue === choiceDList[i-1]}
-            onChange={(event) => handleOptionChange(event, i-1)}
+            onChange={(event) => handleOptionChange(event, i - 1)}
           />
           {/* <span className="ml-2">{choice.length > 0 ? choice[3].choice : ""}</span> */}
-          <span className="ml-2">{choiceDList[i-1]}</span>
+          <span className="ml-2">{choiceDList[i - 1]}</span>
         </label>
       </div>
       ]);
@@ -473,13 +479,18 @@ useEffect(()=>{
         {questions}
 
         <div className="flex justify-end col-span-12">
-          <Link
-            className=" btn  text-white btn-primary"
-            onClick={createTest}
-            to="/readingScore"
-          >
-            Submit
-          </Link>
+          {canSubmit ? (
+            <Link
+              className="btn text-white btn-primary"
+              onClick={createTest}
+            >
+              Submit
+            </Link>
+          ) : (
+            <button className="btn text-white btn-primary" disabled>
+              Submit
+            </button>
+          )}
 
         </div>
       </div>
